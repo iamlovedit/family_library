@@ -1,6 +1,7 @@
 body {
   overflow: hidden;
   --header-height: 52px;
+  --footer-height: 60px;
 }
 
 @media print {

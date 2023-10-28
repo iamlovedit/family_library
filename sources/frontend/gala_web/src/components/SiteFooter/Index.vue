@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <n-layout-footer bordered style="height: var(--footer-height)">
 
-    </div>
+    </n-layout-footer>
 </template>
 
 <script setup lang="ts">

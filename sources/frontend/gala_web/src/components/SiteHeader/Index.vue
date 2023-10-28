@@ -1,6 +1,11 @@
 <template>
-    <n-layout-header bordered style="height: var(--header-height)">
-
+    <n-layout-header bordered style="height: var(--header-height)" class="px-3 flex flex-row justify-center flex-nowrap">
+        <div>
+            1
+        </div>
+        <div>
+            2
+        </div>
     </n-layout-header>
 </template>
 

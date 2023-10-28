@@ -1,7 +1,7 @@
 <template>
   <n-config-provider :theme="darkTheme">
     <n-global-style />
-    <div class="w-full box-border min-h-screen flex flex-col">
+    <div class="w-full box-border min-h-screen flex flex-col justify-between">
       <SiteHeader />
       <router-view />
       <SiteFooter />
