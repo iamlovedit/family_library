@@ -7,12 +7,12 @@ const appSetting: AppState = getLocalSetting();
 export const useAppStore = defineStore('app', () => {
     const appState = ref<AppState>(appSetting);
 
-    function setTheme(theme: Theme) {
-        appState.value.theme = theme;
+    function switchTheme() {
+        appState.value.theme = appState.value.theme === 'light' ? 'dark' : 'light';
         saveState();
     }
 
-    function setLangue(langue: Language) {
+    function setLanguage(langue: Language) {
         appState.value.language = langue;
         saveState();
     }
@@ -23,7 +23,7 @@ export const useAppStore = defineStore('app', () => {
 
     return {
         appState,
-        setTheme,
-        setLangue
+        switchTheme,
+        setLanguage
     }
 })
