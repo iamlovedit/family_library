@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="w-full box-border  flex flex-col justify-between">
+    Home
+  </div>
 </template>
+
+<script setup lang="ts">
+</script>
