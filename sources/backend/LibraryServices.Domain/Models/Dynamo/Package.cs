@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SqlSugar;
 
-namespace LibraryServices.Domain.Models.Package
+namespace LibraryServices.Domain.Models.Dynamo
 {
     [SugarTable("library_packages")]
     public class Package : IDeletable

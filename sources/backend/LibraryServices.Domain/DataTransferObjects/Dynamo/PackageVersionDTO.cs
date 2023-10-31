@@ -1,4 +1,4 @@
-﻿namespace LibraryServices.Domain.DataTransferObjects.Package
+﻿namespace LibraryServices.Domain.DataTransferObjects.Dynamo
 {
     public class PackageVersionDTO
     {

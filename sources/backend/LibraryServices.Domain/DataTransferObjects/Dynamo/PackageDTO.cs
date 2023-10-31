@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LibraryServices.Domain.DataTransferObjects.Package
+﻿namespace LibraryServices.Domain.DataTransferObjects.Dynamo
 {
     public class PackageDTO
     {
