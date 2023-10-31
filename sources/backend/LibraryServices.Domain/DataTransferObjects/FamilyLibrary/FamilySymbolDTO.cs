@@ -1,4 +1,6 @@
-﻿namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
+﻿using LibraryServices.Domain.DataTransferObjects.FamilyParameter;
+
+namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
 {
     public class FamilySymbolDTO
     {

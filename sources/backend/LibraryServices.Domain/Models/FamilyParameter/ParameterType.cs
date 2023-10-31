@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace LibraryServices.Domain.Models.FamilyLibrary
+namespace LibraryServices.Domain.Models.FamilyParameter
 {
     [SugarTable("library_parameter_types")]
     public class ParameterType : IDeletable

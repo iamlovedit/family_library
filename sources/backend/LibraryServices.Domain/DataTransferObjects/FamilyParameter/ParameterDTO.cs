@@ -1,7 +1,7 @@
 ﻿using SqlSugar;
 using System.Text.Json.Serialization;
 
-namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
+namespace LibraryServices.Domain.DataTransferObjects.FamilyParameter
 {
     public class ParameterDTO
     {

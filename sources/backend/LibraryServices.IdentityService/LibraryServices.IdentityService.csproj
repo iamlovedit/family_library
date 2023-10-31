@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\backend\LibraryServices.Domain\LibraryServices.Domain.csproj" />
-    <ProjectReference Include="..\backend\LibraryServices.Infrastructure\LibraryServices.Infrastructure.csproj" />
+    <ProjectReference Include="..\LibraryServices.Domain\LibraryServices.Domain.csproj" />
+    <ProjectReference Include="..\LibraryServices.Infrastructure\LibraryServices.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
