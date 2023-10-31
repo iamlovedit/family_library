@@ -11,7 +11,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "POSTGRESQL_PASSWORD": "pass@word",
         "POSTGRESQL_HOST": "localhost",
-        "POSTGRESQL_DATABASE": "jkit_service",
+        "POSTGRESQL_DATABASE": "library_service",
         "POSTGRESQL_USER": "root",
         "POSTGRESQL_PORT": "5432",
         "REDIS_HOST": "localhost",
