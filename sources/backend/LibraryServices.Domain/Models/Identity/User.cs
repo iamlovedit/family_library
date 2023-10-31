@@ -14,7 +14,7 @@ namespace LibraryServices.Domain.Models.Identity
         [SugarColumn(ColumnName = "user_nickname", IsNullable = true)]
         public string? Nickname { get; set; }
 
-        [SugarColumn(ColumnName = "user_password", Length = 16)]
+        [SugarColumn(ColumnName = "user_password", Length = 32)]
         public string? Password { get; set; }
 
         [SugarColumn(ColumnName = "user_email",Length =32)]
