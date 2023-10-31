@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using LibraryServices.Domain.Models.FamilyParameter;
+using SqlSugar;
 
 namespace LibraryServices.Domain.Models.FamilyLibrary
 {

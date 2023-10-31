@@ -1,4 +1,5 @@
-﻿using LibraryServices.Domain.Models.Identity;
+﻿using LibraryServices.Domain.Models.FamilyParameter;
+using LibraryServices.Domain.Models.Identity;
 using SqlSugar;
 
 namespace LibraryServices.Domain.Models.FamilyLibrary

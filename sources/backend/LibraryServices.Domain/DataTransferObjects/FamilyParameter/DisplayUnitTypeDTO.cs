@@ -1,4 +1,4 @@
-﻿namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
+﻿namespace LibraryServices.Domain.DataTransferObjects.FamilyParameter
 {
     public class DisplayUnitTypeDTO
     {
