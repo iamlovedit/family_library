@@ -1,4 +1,5 @@
-﻿using LibraryServices.Infrastructure.Filters;
+﻿using AutoMapper;
+using LibraryServices.Infrastructure.Filters;
 using LibraryServices.Infrastructure.Repository;
 using LibraryServices.Infrastructure.Sercurity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,6 +36,11 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
             };
+
+            services.AddSingleton(provider => new MapperConfiguration(config =>
+            {
+                config.AddProfile(new MappingProfile());
+            }).CreateMapper());
 
             services.AddRouting(options =>
             {

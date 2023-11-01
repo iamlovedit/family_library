@@ -32,7 +32,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
         {
             var info = new OpenApiInfo()
             {
-                Title = "chatgpt services",
+                Title = "library services",
                 Version = description.ApiVersion.ToString()
             };
 
