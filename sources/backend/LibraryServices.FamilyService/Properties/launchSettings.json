@@ -14,7 +14,10 @@
         "REDIS_HOST": "localhost",
         "REDIS_PASSWORD": "pass@word",
         "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
-        "AES_KEY": "zxcvbnmasdfghjkl"
+        "AES_KEY": "zxcvbnmasdfghjkl",
+        "MINIO_HOST": "localhost",
+        "MINIO_ROOT_USER": "admin",
+        "MINIO_ROOT_PASSWORD": "pass@word"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:9000"
