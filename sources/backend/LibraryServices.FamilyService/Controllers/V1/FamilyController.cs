@@ -12,7 +12,7 @@ using SqlSugar;
 
 namespace LibraryServices.FamilyService.Controllers.V1
 {
-    [Route("family/v1")]
+    [Route("family/{version:apiVersion}")]
     [ApiVersion("1.0")]
     public class FamilyController : ApiControllerBase
     {
