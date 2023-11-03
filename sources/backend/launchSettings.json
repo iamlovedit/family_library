@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "libraryservices.familyservice": "StartDebugging",
+        "libraryservices.identityservice": "StartDebugging",
+        "libraryservices.packageservice": "StartDebugging",
+        "libraryservices.parameterservice": "StartDebugging"
+      }
+    }
+  }
+}

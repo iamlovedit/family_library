@@ -1,24 +1,33 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "LibraryServices.Identity": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:7000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "POSTGRESQL_PASSWORD": "pass@word",
         "POSTGRESQL_HOST": "localhost",
-        "POSTGRESQL_DATABASE": "jkit_service",
+        "POSTGRESQL_DATABASE": "library_service",
         "POSTGRESQL_USER": "root",
         "POSTGRESQL_PORT": "5432",
         "REDIS_HOST": "localhost",
         "REDIS_PASSWORD": "pass@word",
         "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
         "AES_KEY": "zxcvbnmasdfghjkl"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:7000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://+:80"
+      },
+      "publishAllPorts": true
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
 }

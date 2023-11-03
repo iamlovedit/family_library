@@ -1,0 +1,108 @@
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 6001
+static_resources:
+  listeners:
+    - address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 80
+      filter_chains:
+        - filters:
+            - name: envoy.http_connection_manager
+              config:
+                codec_type: auto
+                stat_prefix: ingress_http
+                route_config:
+                  name: library_services_route
+                  virtual_hosts:
+                    - name: library_services_backend
+                      domains:
+                        - "*"
+                      routes:
+                        - name: "family"
+                          match:
+                            prefix: "/family"
+                          route:
+                            auto_host_rewrite: true
+                            cluster: library_family
+
+                        - name: "identity"
+                          match:
+                            prefix: "/identity"
+                          route:
+                            auto_host_rewrite: true
+                            cluster: library_identity
+
+                        - name: "package"
+                          match:
+                            prefix: "/package"
+                          route:
+                            auto_host_rewrite: true
+                            cluster: library_package
+
+                        - name: "parameter"
+                          match:
+                            prefix: "/parameter"
+                          route:
+                            auto_host_rewrite: true
+                            cluster: library_parameter
+                http_filters:
+                  - name: envoy.router
+                access_log:
+                  - name: envoy.file_access_log
+                    filter:
+                      not_health_check_filter: { }
+                    config:
+                      json_format:
+                        time: "%START_TIME%"
+                        protocol: "%PROTOCOL%"
+                        duration: "%DURATION%"
+                        request_method: "%REQ(:METHOD)%"
+                        request_host: "%REQ(HOST)%"
+                        path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                        response_flags: "%RESPONSE_FLAGS%"
+                        route_name: "%ROUTE_NAME%"
+                        upstream_host: "%UPSTREAM_HOST%"
+                        upstream_cluster: "%UPSTREAM_CLUSTER%"
+                        upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"
+                      path: "/tmp/access.log"
+  clusters:
+    - name: library_family
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: round_robin
+      hosts:
+        - socket_address:
+            address: library_family
+            port_value: 80
+
+    - name: library_identity
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: round_robin
+      hosts:
+        - socket_address:
+            address: library_identity
+            port_value: 80
+
+    - name: library_package
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: round_robin
+      hosts:
+        - socket_address:
+            address: library_package
+            port_value: 80
+
+    - name: library_parameter
+      connect_timeout: 0.25s
+      type: logical_dns
+      lb_policy: round_robin
+      hosts:
+        - socket_address:
+            address: library_parameter
+            port_value: 80
