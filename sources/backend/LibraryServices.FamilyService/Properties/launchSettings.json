@@ -15,7 +15,7 @@
         "REDIS_PASSWORD": "pass@word",
         "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
         "AES_KEY": "zxcvbnmasdfghjkl",
-        "MINIO_HOST": "https://files.youngala.com",
+        "MINIO_HOST": "files.youngala.com",
         "MINIO_ROOT_USER": "test",
         "MINIO_ROOT_PASSWORD": "test@12315"
       },
