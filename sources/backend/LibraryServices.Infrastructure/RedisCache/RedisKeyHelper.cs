@@ -11,5 +11,10 @@
         {
             return $"identity/user?id={userId}";
         }
+        
+        public static string GetFamilyByIdKey(long familyId)
+        {
+            return $"family/familyId={familyId}";
+        }
     }
 }
