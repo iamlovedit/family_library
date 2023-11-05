@@ -148,25 +148,6 @@ services:
     ports:
       - "$REDIS_PORT:6379"
     command: redis-server --requirepass $REDIS_PASSWORD
-
-  # minio:
-  #   networks:
-  #     - "library_services_net"
-  #   container_name: "minio"
-  #   image: minio/minio
-  #   ports:
-  #     - "6001:9000" #api port
-  #     - "6002:9001" #console port 
-  #   environment:
-  #     MINIO_ROOT_USER: $MINIO_ROOT_USER     # They are equivalent:  MINIO_ACCESS_KEY=MINIO_ROOT_USER MINIO_SECRET_KEY=MINIO_ROOT_PASSWORD
-  #     MINIO_ROOT_PASSWORD: $MINIO_ROOT_PASSWORD # least 8 characters
-  #   restart: always
-  #   privileged: true
-  #   command: server --console-address ':9001' /data
-  #   volumes:
-  #     - ~/docker/minio/data:/data               # mapping the data directory in the current directory to the /data directory in the container
-  #     - ~/docker/minio/config:/root/.minio/     # mapping configuration directory
-
   seqcli:
     image: datalust/seqcli:latest
     container_name: "seqcli"
