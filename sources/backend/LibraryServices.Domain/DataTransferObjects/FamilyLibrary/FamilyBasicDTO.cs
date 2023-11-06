@@ -27,6 +27,6 @@ namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
 
         public int Favorites { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

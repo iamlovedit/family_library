@@ -4,9 +4,9 @@
     {
         public string? Name { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateDate { get; set; }
 
-        public DateTime UpdateTime { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         public string? Id { get; set; }
 

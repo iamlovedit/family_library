@@ -15,11 +15,11 @@ namespace LibraryServices.Domain.Models.Dynamo
 
         [JsonProperty("created")]
         [SugarColumn(ColumnName = "package_createdDate")]
-        public DateTime CreateTime { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [JsonProperty("latest_version_update")]
-        [SugarColumn(ColumnName = "package_updateDate")]
-        public DateTime UpdateTime { get; set; }
+        [SugarColumn(ColumnName = "package_updatedDate")]
+        public DateTime UpdatedDate { get; set; }
 
         [SugarColumn(IsNullable = true, Length = 65535, ColumnName = "package_description")]
         public string? Description { get; set; }
@@ -43,30 +43,6 @@ namespace LibraryServices.Domain.Models.Dynamo
         public List<PackageVersion>? Versions { get; set; }
 
         [SugarColumn(ColumnName = "package_isDeleted")]
-        public bool IsDeleted { get; set; }
-    }
-
-    [SugarTable("library_package_versions")]
-    public class PackageVersion : IDeletable
-    {
-        [SugarColumn(IsPrimaryKey = true, IsNullable = false, ColumnName = "version_version")]
-        public string? Version { get; set; }
-
-        [SugarColumn(IsPrimaryKey = true, IsNullable = false, ColumnName = "version_packageId")]
-        public string? PackageId { get; set; }
-
-        [SugarColumn(ColumnName = "package_url")]
-        public string? Url { get; set; }
-
-        [JsonProperty("created")]
-        [SugarColumn(ColumnName = "package_createdDate")]
-        public DateTime CreateTime { get; set; }
-
-        [JsonProperty("scan_status")]
-        [SugarColumn(IsNullable = true, ColumnName = "package_scanStatus")]
-        public string? ScanStatus { get; set; }
-
-        [SugarColumn(ColumnName = "version_isDeleted")]
         public bool IsDeleted { get; set; }
     }
 }
