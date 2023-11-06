@@ -4,6 +4,6 @@
     {
         public string? Version { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

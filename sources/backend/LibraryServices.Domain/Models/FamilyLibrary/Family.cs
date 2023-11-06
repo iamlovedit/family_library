@@ -13,11 +13,11 @@ namespace LibraryServices.Domain.Models.FamilyLibrary
         [SugarColumn(IsNullable = false, ColumnName = "family_name")]
         public string? Name { get; set; }
 
-        [SugarColumn(IsNullable = false, ColumnName = "family_createDate")]
-        public DateTime CreateDate { get; set; }
+        [SugarColumn(IsNullable = false, ColumnName = "family_createdDate")]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        [SugarColumn(ColumnName = "family_updateDate")]
-        public DateTime UpdateDate { get; set; }
+        [SugarColumn(ColumnName = "family_updatedDate")]
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
         [SugarColumn(ColumnName = "family_stars")]
         public uint Stars { get; set; }

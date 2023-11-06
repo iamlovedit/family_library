@@ -9,12 +9,25 @@ const routes = [
   {
     path: '/packages',
     name: 'packages',
-    component: () => import('@/views/Package/Index.vue')
+    component: () => import('@/views/Package/Index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'packages',
+        component: () => import('@/views/Package/Browser/Index.vue')
+      }
+    ]
   },
   {
     path: '/families',
     name: 'families',
-    component: () => import('@/views/Family/Index.vue')
+    component: () => import('@/views/Family/Index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/Family/Browser/Index.vue')
+      }
+    ]
   }
 ]
 
