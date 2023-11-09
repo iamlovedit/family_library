@@ -1,13 +1,13 @@
 <template>
   <n-config-provider :theme="theme" :locale="locale" :data-locale="dataLocale">
     <n-global-style />
-    <n-message-provider>
+    <naive-provider>
       <div class="w-full box-border min-h-screen flex flex-col justify-between">
         <SiteHeader />
         <router-view />
         <SiteFooter />
       </div>
-    </n-message-provider>
+    </naive-provider>
   </n-config-provider>
 </template>
 
@@ -19,6 +19,7 @@ import { enUS, dateEnUS } from 'naive-ui'
 import { useEventListener } from "@vueuse/core";
 import SiteFooter from '@components/SiteFooter/Index.vue';
 import SiteHeader from '@components/SiteHeader/Index.vue';
+import NaiveProvider from '@components/NaiveProvider/Index.vue';
 import { useAppStore } from '@stores/modules/app'
 
 const appStore = useAppStore()

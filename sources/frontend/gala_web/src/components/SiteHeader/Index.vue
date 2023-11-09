@@ -9,20 +9,20 @@
                         </a>
                     </div>
                     <n-menu :options="menuOptions" mode="horizontal" @update:value="handleUpdateValue"
-                        :default-value="defaultMenuItem" />
+                        v-model:value="activeKey" />
                 </n-space>
             </template>
             <template #avatar>
                 <site-icon />
             </template>
             <template #extra>
-                <n-space>
+                <n-space :algin="'center'">
                     <n-button circle @click="switchTheme">
                         <n-icon :component="themeIcon" />
                     </n-button>
                     <n-dropdown :options="languageOptions" placement="bottom-start">
                         <n-button circle>
-                            <n-icon :component="Language" />
+                            <n-icon :component="LanguageIcon" />
                         </n-button>
                     </n-dropdown>
                 </n-space>
@@ -33,15 +33,15 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { h, Component, ref, onMounted, watch, computed } from 'vue'
+import { h, Component, ref, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { NIcon, useMessage } from 'naive-ui'
+import { NIcon } from 'naive-ui'
 import SiteIcon from '@components/icons/SiteIcon.vue'
 import {
     BookOutline as BookIcon,
     HomeOutline as HomeIcon,
     FileTrayFullSharp as FileIcon,
-    Language
+    Language as LanguageIcon
 } from '@vicons/ionicons5'
 import { DarkModeRound, LightModeRound } from '@vicons/material';
 import { useAppStore } from '@/stores/modules/app';
@@ -50,8 +50,7 @@ import { useAppStore } from '@/stores/modules/app';
 function renderIcon(icon: Component) {
     return () => h(NIcon, null, { default: () => h(icon) })
 }
-const defaultMenuItem = ref<string | null>('packages');
-const message = useMessage()
+const activeKey = ref<string | null>();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
@@ -81,7 +80,7 @@ const languageOptions = [
         key: 'en-US',
         props: {
             onClick: () => {
-                appStore.setLanguage('en-US');
+                appStore.updateLanguage('en-US')
             }
         },
     },
@@ -90,18 +89,15 @@ const languageOptions = [
         key: 'zh-CN',
         props: {
             onClick: () => {
-                appStore.setLanguage('zh-CN');
+                appStore.updateLanguage('zh-CN')
             },
         },
     }
 ];
-// onMounted(() => {
-//     defaultMenuItem.value = route.name as string;
-// })
 
-// watch(route, () => {
-//     defaultMenuItem.value = route.name as string;
-// })
+watch(() => route.path, () => {
+    activeKey.value = route.matched[0].name as string
+})
 
 const themeIcon = computed(() => {
     return appStore.appState.theme == 'dark' ? DarkModeRound : LightModeRound;

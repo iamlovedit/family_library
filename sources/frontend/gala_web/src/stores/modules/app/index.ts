@@ -1,29 +1,36 @@
 import { defineStore } from 'pinia'
 import { getLocalSetting, setLocalSetting, type AppState, type Language, type Theme } from './helper';
 import { ref } from 'vue';
-
-const appSetting: AppState = getLocalSetting();
+import { store } from '@/stores/helper'
 
 export const useAppStore = defineStore('app', () => {
-    const appState = ref<AppState>(appSetting);
-
-    function switchTheme() {
-        appState.value.theme = appState.value.theme === 'light' ? 'dark' : 'light';
+    const appState = ref<AppState>(getLocalSetting());
+    function updateTheme(theme: Theme) {
+        appState.value.theme = theme;
         saveState();
     }
 
-    function setLanguage(langue: Language) {
-        appState.value.language = langue;
+    function updateLanguage(language: Language) {
+        appState.value.language = language;
         saveState();
     }
 
-    function saveState(): void {
+    function saveState() {
         setLocalSetting(appState.value);
+    }
+    function switchTheme() {
+        appState.value.theme = appState.value.theme === 'dark' ? 'light' : 'dark';
+        saveState();
     }
 
     return {
         appState,
-        switchTheme,
-        setLanguage
+        updateTheme,
+        updateLanguage,
+        switchTheme
     }
 })
+
+export function useAppStoreWithOut() {
+    return useAppStore(store)
+}

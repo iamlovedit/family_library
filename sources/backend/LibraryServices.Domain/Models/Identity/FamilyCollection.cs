@@ -1,9 +1,4 @@
 ﻿using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryServices.Domain.Models.Identity
 {
@@ -16,8 +11,8 @@ namespace LibraryServices.Domain.Models.Identity
         [SugarColumn(ColumnName = "collection_userId", IsPrimaryKey = true)]
         public long UserId { get; set; }
 
-        [SugarColumn(ColumnName = "collection_createTime")]
-        public DateTime CreateTime { get; set; }
+        [SugarColumn(ColumnName = "collection_createDate")]
+        public DateTime CreateDate { get; set; } = DateTime.Now;
 
         [SugarColumn(ColumnName = "collection_isDeleted")]
         public bool IsDeleted { get; set; }

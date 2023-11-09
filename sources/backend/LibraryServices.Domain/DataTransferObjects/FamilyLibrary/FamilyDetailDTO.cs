@@ -25,7 +25,7 @@ namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
 
         public uint Downloads { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public string? Description { get; set; }
 
