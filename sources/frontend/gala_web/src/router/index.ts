@@ -1,39 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('@/views/HomeView.vue')
-  },
-  {
-    path: '/packages',
-    name: 'packages',
-    component: () => import('@/views/Package/Index.vue'),
-    children: [
-      {
-        path: '',
-        name: 'packages',
-        component: () => import('@/views/Package/Browser/Index.vue')
-      }
-    ]
-  },
-  {
-    path: '/families',
-    name: 'families',
-    component: () => import('@/views/Family/Index.vue'),
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/Family/Browser/Index.vue')
-      }
-    ]
-  }
-]
+import { App } from 'vue'
+import routes from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
+  routes: routes,
+  scrollBehavior() {
+    return { left: 0, top: 0 }
+  }
 })
 
+export async function setupRouter(app: App) {
+  app.use(router)
+  await router.isReady()
+}
 export default router

@@ -1,20 +1,27 @@
-import '@assets/main.css'
-import 'uno.css';
-import 'katex/dist/katex.css';
-import 'vfonts/Lato.css'
-import 'vfonts/FiraCode.css'
 import naive from 'naive-ui'
-
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
+import { setupAssets, setupScrollbarStyle } from '@/plugins'
 import App from '@/App.vue'
-import router from '@/router'
+import { setupStore } from '@/stores'
+import { setupI18n } from '@/locales'
+import { setupRouter } from '@/router'
 
-const app = createApp(App)
+async function bootstrap() {
+    const app = createApp(App)
 
-app.use(naive)
-app.use(createPinia())
-app.use(router)
+    setupAssets();
 
-app.mount('#app')
+    setupScrollbarStyle();
+
+    setupStore(app);
+
+    setupI18n(app)
+
+    await setupRouter(app)
+
+    app.use(naive)
+
+    app.mount('#app')
+}
+
+bootstrap();

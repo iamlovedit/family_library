@@ -4,7 +4,7 @@ const LOCAL_NAME = 'appSetting'
 
 export type Language = 'zh-CN' | 'en-US'
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark' | 'auto'
 
 export interface AppState {
     theme: Theme

@@ -80,7 +80,7 @@ const languageOptions = [
         key: 'en-US',
         props: {
             onClick: () => {
-                appStore.setLanguage('en-US');
+                appStore.updateLanguage('en-US')
             }
         },
     },
@@ -89,7 +89,7 @@ const languageOptions = [
         key: 'zh-CN',
         props: {
             onClick: () => {
-                appStore.setLanguage('zh-CN');
+                appStore.updateLanguage('zh-CN')
             },
         },
     }
