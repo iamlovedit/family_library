@@ -1,8 +1,9 @@
 <template>
-  <div class="w-full box-border  flex flex-col justify-between">
+  <site-content>
 
-  </div>
+  </site-content>
 </template>
 
 <script setup lang="ts">
+import SiteContent from '@components/Layout/SiteContent/Index.vue';
 </script>

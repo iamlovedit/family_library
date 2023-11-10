@@ -1,6 +1,6 @@
 import type { GlobalThemeOverrides } from "naive-ui"
 import { computed, watch } from 'vue'
-import { darkTheme, useOsTheme } from 'naive-ui'
+import { darkTheme, useOsTheme, lightTheme } from 'naive-ui'
 import { useAppStore } from "@/stores/modules/app"
 
 export function useTheme() {
@@ -12,7 +12,7 @@ export function useTheme() {
     })
 
     const theme = computed(() => {
-        return isDark.value ? darkTheme : undefined
+        return isDark.value ? darkTheme : lightTheme
     })
 
     const themeOverrides = computed<GlobalThemeOverrides>(() => {

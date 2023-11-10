@@ -1,28 +1,23 @@
 <template>
-  <n-config-provider :theme="theme" :locale="locale" :data-locale="dataLocale">
+  <n-config-provider :theme="theme" :locale="language" :data-locale="dataLocale" :theme-overrides="themeOverrides">
     <n-global-style />
     <naive-provider>
       <div class="w-full box-border min-h-screen flex flex-col justify-between">
-        <SiteHeader />
         <router-view />
-        <SiteFooter />
       </div>
     </naive-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { darkTheme, lightTheme } from "naive-ui";
-import { zhCN, dateZhCN } from 'naive-ui'
-import { enUS, dateEnUS } from 'naive-ui'
-import { useEventListener } from "@vueuse/core";
-import SiteFooter from '@components/SiteFooter/Index.vue';
-import SiteHeader from '@components/SiteHeader/Index.vue';
-import NaiveProvider from '@components/NaiveProvider/Index.vue';
-import { useAppStore } from '@stores/modules/app'
 
-const appStore = useAppStore()
+import { useEventListener } from "@vueuse/core";
+import NaiveProvider from '@components/NaiveProvider/Index.vue';
+import { useTheme } from '@/hooks/useTheme'
+import { useLanguage } from '@/hooks/useLanguage';
+
+const { theme, themeOverrides } = useTheme()
+const { language, dataLocale } = useLanguage()
 
 function setFullHeight(): void {
   const headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height'), 10);
@@ -31,14 +26,4 @@ function setFullHeight(): void {
 }
 useEventListener('resize', setFullHeight);
 
-const theme = computed(() => {
-  return appStore.appState.theme === 'dark' ? darkTheme : lightTheme
-})
-const locale = computed(() => {
-  return appStore.appState.language === 'zh-CN' ? zhCN : enUS
-});
-
-const dataLocale = computed(() => {
-  return appStore.appState.language === 'zh-CN' ? dateZhCN : dateEnUS
-})
 </script>

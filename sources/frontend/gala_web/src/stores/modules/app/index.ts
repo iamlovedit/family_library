@@ -11,8 +11,10 @@ export const useAppStore = defineStore('app', () => {
     }
 
     function updateLanguage(language: Language) {
-        appState.value.language = language;
-        saveState();
+        if (appState.value.language !== language) {
+            appState.value.language = language;
+            saveState();
+        }
     }
 
     function saveState() {
