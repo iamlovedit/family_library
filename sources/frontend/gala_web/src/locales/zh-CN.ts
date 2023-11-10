@@ -27,9 +27,17 @@ export default {
         },
         placeholder: "输入节点包名",
     },
-    error:{
-        404:{
-            title:'资源不存在',
+    error: {
+        404: {
+            title: '资源不存在',
         }
+    },
+    login: {
+        username: '用户名',
+        username_placeholder: '请输入用户名',
+        password: '密码',
+        password_placeholder: '请输入密码',
+        remeber: '记住我',
+        
     }
 }

@@ -26,5 +26,17 @@ export default {
             createdDate: 'Created Date',
         },
         placeholder: "Enter package name",
+    },
+    error: {
+        404: {
+            title: '资源不存在',
+        }
+    },
+    login: {
+        username: 'Username',
+        username_placeholder: 'Enter username',
+        password: 'Password',
+        password_placeholder: 'Enter password',
+        remeber: 'Remeber me',
     }
 }
