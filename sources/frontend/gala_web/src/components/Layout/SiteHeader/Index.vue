@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { h, Component, computed } from 'vue'
+import { h, Component, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NIcon } from 'naive-ui'
 import SiteIcon from '@components/icons/SiteIcon.vue'
@@ -55,7 +55,7 @@ function renderIcon(icon: Component) {
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
-
+const activeKey = ref<string>(route.name as string);
 const menuOptions: MenuOption[] = [
     {
         label: t('header.home'),
@@ -97,10 +97,6 @@ const languageOptions = [
         },
     }
 ];
-
-const activeKey = computed<string>(() => {
-    return route.name as string;
-});
 
 const themeIcon = computed(() => {
     return appStore.appState.theme == 'dark' ? DarkModeRound : LightModeRound;
