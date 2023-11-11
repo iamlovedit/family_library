@@ -38,6 +38,6 @@ export default {
         password: '密码',
         password_placeholder: '请输入密码',
         remeber: '记住我',
-        
+        logining: '登录中...',
     }
 }

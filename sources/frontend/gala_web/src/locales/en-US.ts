@@ -38,5 +38,6 @@ export default {
         password: 'Password',
         password_placeholder: 'Enter password',
         remeber: 'Remeber me',
+        logining: 'Logining...',
     }
 }
