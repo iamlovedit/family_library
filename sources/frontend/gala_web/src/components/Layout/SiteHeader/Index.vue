@@ -45,7 +45,7 @@ import {
 } from '@vicons/ionicons5'
 import { DarkModeRound, LightModeRound } from '@vicons/material';
 import { useAppStore } from '@/stores/modules/app';
-import { setLocale, t } from '@/locales'
+import { t } from '@/locales'
 
 
 
@@ -82,7 +82,6 @@ const languageOptions = [
         props: {
             onClick: () => {
                 appStore.updateLanguage('en-US')
-                setLocale('en-US') //TODO:does not work
             }
         },
     },
@@ -92,7 +91,6 @@ const languageOptions = [
         props: {
             onClick: () => {
                 appStore.updateLanguage('zh-CN')
-                setLocale('zh-CN') //TODO:does not work
             },
         },
     }
