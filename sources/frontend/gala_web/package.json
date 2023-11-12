@@ -16,6 +16,7 @@
     "axios": "^1.6.1",
     "katex": "^0.16.9",
     "pinia": "^2.1.7",
+    "three": "^0.158.0",
     "vue": "^3.3.8",
     "vue-i18n": "^9.6.5",
     "vue-router": "^4.2.5"
@@ -25,6 +26,7 @@
     "@rushstack/eslint-patch": "^1.5.1",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.18.9",
+    "@types/three": "^0.158.2",
     "@unocss/preset-uno": "^0.57.3",
     "@unocss/transformer-directives": "^0.57.3",
     "@unocss/vite": "^0.57.3",
