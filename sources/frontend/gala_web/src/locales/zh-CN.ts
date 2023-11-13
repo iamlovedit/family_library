@@ -20,6 +20,7 @@ export default {
     },
     package: {
         order: {
+            default: '综合',
             name: '名称',
             downloads: '下载量',
             votes: '点赞量',

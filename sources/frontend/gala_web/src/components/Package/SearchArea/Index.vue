@@ -1,12 +1,13 @@
 <template>
     <div class="w-full box-border h-full flex flex-col flex-nowrap gap-5 ">
         <n-input-group>
-            <n-input :v-model:value="searchValue" type="text" :placeholder="t('package.placeholder')" clearable />
+            <n-input :value="searchValue" type="text" :placeholder="t('package.placeholder')" clearable
+                :on-clear="handleInputClear" />
             <n-button type="primary" bordered keyboard strong @click="handleSearch" :loading="loading">
                 搜索
             </n-button>
         </n-input-group>
-        <n-radio-group v-model:value="orderValue" :on-update:value="handleUpdateValue" :loading="loading">
+        <n-radio-group :value="orderValue" :on-update:value="handleUpdateValue" :loading="loading">
             <n-radio-button v-for="order in orders" :key="order.value" :value="order.value" :label="order.label" />
         </n-radio-group>
     </div>
@@ -27,6 +28,10 @@ const loading = ref<boolean>(false)
 
 const orders = [
     {
+        value: 'default',
+        label: t('package.order.default')
+    },
+    {
         value: 'name',
         label: t('package.order.name')
     },
@@ -45,13 +50,19 @@ const orders = [
 ]
 
 function handleUpdateValue(value: string) {
-    orderValue.value = value;
+    orderValue.value = value
     router.push({
         name: 'package-search',
         query: {
             keyword: searchValue.value,
             orderBy: value
         }
+    })
+}
+
+function handleInputClear() {
+    router.push({
+        name: 'packages'
     })
 }
 

@@ -2,9 +2,7 @@
   <n-config-provider :theme="theme" :locale="language" :data-locale="dataLocale" :theme-overrides="themeOverrides">
     <n-global-style />
     <naive-provider>
-      <div class="w-full box-border min-h-screen flex flex-col justify-between">
-        <router-view />
-      </div>
+      <router-view />
     </naive-provider>
   </n-config-provider>
 </template>

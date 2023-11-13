@@ -20,6 +20,7 @@ export default {
     },
     package: {
         order: {
+            default: 'Default',
             name: 'Name',
             downloads: 'Downloads',
             votes: 'Votes',
