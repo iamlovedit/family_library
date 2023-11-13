@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <SearchArea />
-    </div>
+    <SearchArea />
 </template>
 
 <script setup lang="ts">
