@@ -12,38 +12,25 @@
         </n-radio-group>
 
         <n-list bordered hoverable show-divider class="flex-1">
-            <n-list-item>
-                <n-thing title="相见恨晚" content-style="margin-top: 10px;">
+            <n-list-item v-for="packageObj in packages" :key="packageObj.id">
+                <n-thing :title="packageObj.name" content-style="margin-top: 10px;">
                     <template #description>
                         <n-space size="small" style="margin-top: 4px">
                             <n-tag :bordered="false" type="info" size="small">
-                                暑夜
+                                {{ packageObj.createdDate }}
                             </n-tag>
                             <n-tag :bordered="false" type="info" size="small">
-                                晚春
+                                {{ packageObj.updatedDate }}
+                            </n-tag>
+                            <n-tag :bordered="false" type="info" size="small">
+                                {{ packageObj.downloads }}
+                            </n-tag>
+                            <n-tag :bordered="false" type="info" size="small">
+                                {{ packageObj.votes }}
                             </n-tag>
                         </n-space>
                     </template>
-                    奋勇呀然后休息呀<br>
-                    完成你伟大的人生
-                </n-thing>
-            </n-list-item>
-            <n-list-item>
-                <n-thing title="他在时间门外" content-style="margin-top: 10px;">
-                    <template #description>
-                        <n-space size="small" style="margin-top: 4px">
-                            <n-tag :bordered="false" type="info" size="small">
-                                环形公路
-                            </n-tag>
-                            <n-tag :bordered="false" type="info" size="small">
-                                潜水艇司机
-                            </n-tag>
-                        </n-space>
-                    </template>
-                    最新的打印机<br>
-                    复制着彩色傀儡<br>
-                    早上好我的罐头先生<br>
-                    让他带你去被工厂敲击
+                    {{ packageObj.description }}
                 </n-thing>
             </n-list-item>
         </n-list>
@@ -54,8 +41,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { t } from '@/locales';
+import { t } from '@/locales'
+import { usePackageStore } from '@stores/modules/package'
+import type { Package } from '@/stores/modules/package/helper'
 
+const packageStore = usePackageStore()
 const route = useRoute()
 const { orderBy, keyword } = route.query;
 
@@ -65,6 +55,7 @@ const orderValue = ref(orderBy || 'default')
 const loading = ref<boolean>(false)
 const page = ref<number>();
 const pageCount = ref<number>();
+const packages = ref<Package[]>();
 const orders = [
     {
         value: 'default',

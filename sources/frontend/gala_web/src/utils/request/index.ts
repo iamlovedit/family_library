@@ -2,6 +2,13 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 
+export type HttpResponse<T> = {
+    statusCode: number;
+    message: string;
+    response: T,
+    succeed: boolean
+}
+
 const router = useRouter();
 const message = useMessage();
 
