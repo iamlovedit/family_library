@@ -12,27 +12,29 @@
         </n-radio-group>
 
         <n-list bordered hoverable show-divider class="flex-1">
-            <n-list-item v-for="packageObj in packages" :key="packageObj.id">
-                <n-thing :title="packageObj.name" content-style="margin-top: 10px;">
-                    <template #description>
-                        <n-space size="small" style="margin-top: 4px">
-                            <n-tag :bordered="false" type="info" size="small">
-                                {{ packageObj.createdDate }}
-                            </n-tag>
-                            <n-tag :bordered="false" type="info" size="small">
-                                {{ packageObj.updatedDate }}
-                            </n-tag>
-                            <n-tag :bordered="false" type="info" size="small">
-                                {{ packageObj.downloads }}
-                            </n-tag>
-                            <n-tag :bordered="false" type="info" size="small">
-                                {{ packageObj.votes }}
-                            </n-tag>
-                        </n-space>
-                    </template>
-                    {{ packageObj.description }}
-                </n-thing>
-            </n-list-item>
+            <n-scrollbar style="max-height: 600px" trigger="none">
+                <n-list-item v-for="packageObj in packages" :key="packageObj.id">
+                    <n-thing :title="packageObj.name" content-style="margin-top: 10px;">
+                        <template #description>
+                            <n-space size="small" style="margin-top: 4px">
+                                <n-tag :bordered="false" type="info" size="small">
+                                    {{ packageObj.createdDate }}
+                                </n-tag>
+                                <n-tag :bordered="false" type="info" size="small">
+                                    {{ packageObj.updatedDate }}
+                                </n-tag>
+                                <n-tag :bordered="false" type="info" size="small">
+                                    {{ packageObj.downloads }}
+                                </n-tag>
+                                <n-tag :bordered="false" type="info" size="small">
+                                    {{ packageObj.votes }}
+                                </n-tag>
+                            </n-space>
+                        </template>
+                        {{ packageObj.description }}
+                    </n-thing>
+                </n-list-item>
+            </n-scrollbar>
         </n-list>
         <n-pagination v-model:page="page" :page-count="pageCount" :on-update:page=handleUpdatePage />
     </div>
@@ -44,6 +46,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { t } from '@/locales'
 import { usePackageStore } from '@stores/modules/package'
 import type { Package } from '@/stores/modules/package/helper'
+import { packages } from './mock'
 
 const packageStore = usePackageStore()
 const route = useRoute()
@@ -55,7 +58,7 @@ const orderValue = ref(orderBy || 'default')
 const loading = ref<boolean>(false)
 const page = ref<number>();
 const pageCount = ref<number>();
-const packages = ref<Package[]>();
+
 const orders = [
     {
         value: 'default',
