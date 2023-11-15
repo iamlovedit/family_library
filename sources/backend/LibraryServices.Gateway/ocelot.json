@@ -1,0 +1,7 @@
+{
+  "Routes": [],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://openapi.youngala.com",
+    "RouteIsCaseSensitive": true
+  }
+}
