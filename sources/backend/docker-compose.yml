@@ -1,6 +1,10 @@
 version: '3.4'
 
 services:
+  library_gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
   library_family:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
