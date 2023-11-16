@@ -22,6 +22,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             var services = builder.Services;
             var configuration = builder.Configuration;
 
+            services.AddHealthChecks();
             services.AddSingleton<SecurityTokenValidator>();
             services.AddSingleton<IAESEncryptionService, AESEncryptionService>();
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerOptionsPostConfigureOptions>();

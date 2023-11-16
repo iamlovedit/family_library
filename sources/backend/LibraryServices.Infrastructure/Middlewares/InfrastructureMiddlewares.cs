@@ -19,6 +19,7 @@ namespace LibraryServices.Infrastructure.Middlewares
                 app.UseSwagger();
                 app.UseVersionedSwaggerUI();
             }
+            app.MapHealthChecks("health");
 
             app.UseCors("cors");
 
