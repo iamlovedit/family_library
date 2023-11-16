@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 services:
   library_gateway:
@@ -9,9 +9,10 @@ services:
     image: envoyproxy/envoy:v1.11.1
     ports:
       - "6000:80"
+      - "6001:6001"
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
- 
+
   library_family:
     image: ${DOCKER_REGISTRY-}library_family
     container_name: "library_family"
@@ -61,7 +62,7 @@ services:
       - REDIS_PASSWORD=$REDIS_PASSWORD
       - AUDIENCE_KEY=$AUDIENCE_KEY
       - AES_KEY=$AES_KEY
-      - TZ=$TIME_ZONE  
+      - TZ=$TIME_ZONE
     depends_on:
       - postgresql
       - redis
@@ -74,7 +75,7 @@ services:
   library_package:
     image: ${DOCKER_REGISTRY-}library_package
     container_name: "library_package"
-    restart: on-failure   
+    restart: on-failure
     networks:
       - "library_services_net"
     volumes:
@@ -89,7 +90,7 @@ services:
       - REDIS_PASSWORD=$REDIS_PASSWORD
       - AUDIENCE_KEY=$AUDIENCE_KEY
       - AES_KEY=$AES_KEY
-      - TZ=$TIME_ZONE  
+      - TZ=$TIME_ZONE
     depends_on:
       - postgresql
       - redis
@@ -117,7 +118,7 @@ services:
       - REDIS_PASSWORD=$REDIS_PASSWORD
       - AUDIENCE_KEY=$AUDIENCE_KEY
       - AES_KEY=$AES_KEY
-      - TZ=$TIME_ZONE  
+      - TZ=$TIME_ZONE
     depends_on:
       - postgresql
       - redis
@@ -136,8 +137,8 @@ services:
     networks:
       - "library_services_net"
     environment:
-      TZ: 'GMT+8'
-      PGTZ: 'GMT+8'
+      TZ: "GMT+8"
+      PGTZ: "GMT+8"
 
   redis:
     networks:
@@ -169,6 +170,5 @@ services:
       - library_services_net
 
 networks:
-    library_services_net:
-        driver: bridge
-       
+  library_services_net:
+    driver: bridge

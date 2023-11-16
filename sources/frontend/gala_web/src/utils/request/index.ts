@@ -2,6 +2,13 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 
+export type HttpResponse<T> = {
+    statusCode: number;
+    message: string;
+    response: T,
+    succeed: boolean
+}
+
 const router = useRouter();
 const message = useMessage();
 
@@ -52,7 +59,7 @@ service.interceptors.response.use(
                     })
                     setTimeout(() => {
                         router.replace({
-                            path: '/login',
+                            path: '/403',
                             query: {
                                 redirect: router.currentRoute.value.fullPath
                             }
@@ -63,6 +70,14 @@ service.interceptors.response.use(
                     message.info("404", {
                         duration: 1500
                     })
+                    setTimeout(() => {
+                        router.replace({
+                            path: '/404',
+                            query: {
+                                redirect: router.currentRoute.value.fullPath
+                            }
+                        });
+                    }, 1500);
                     break;
                 default:
                     message.info(error.response.data.message, {
@@ -73,3 +88,5 @@ service.interceptors.response.use(
         }
     }
 )
+
+export default service

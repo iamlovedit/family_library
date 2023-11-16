@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace LibraryServices.PackageService.Controllers.V1
@@ -47,7 +48,7 @@ namespace LibraryServices.PackageService.Controllers.V1
             }
 
             var versionPage =
-                await versionService.QueryPageAsync(pv => pv.PackageId == id, pageIndex, pageSize, null);
+                await versionService.QueryPageAsync(pv => pv.PackageId == id, pageIndex, pageSize, pv => pv.CreatedDate, OrderByType.Desc);
             var result = versionPage.ConvertTo<PackageVersionDTO>(_mapper);
             await _redis.Set(redisKey, result, _cacheTime);
             return SucceedPage(result);
@@ -66,23 +67,23 @@ namespace LibraryServices.PackageService.Controllers.V1
 
         [HttpGet]
         [Route("packages")]
-        public async Task<MessageData<PageData<PackageDTO>>> GetPackagesByPage(string? keyword = null, int pageIndex = 1, int pageSize = 30)
+        [AllowAnonymous]
+        public async Task<MessageData<PageData<PackageDTO>>> GetPackagesByPage(string? keyword = null, int pageIndex = 1, int pageSize = 30, string? orderBy = null)
         {
             _logger.LogInformation("query packages by keyword: {keyword} pageIndex: {pageIndex} pageSize: {pageSize}", keyword, pageIndex, pageSize);
-            var redisKey = $"?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}";
+            var redisKey = $"packages?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}";
+            var packagesPage = default(PageData<Package>);
             if (await _redis.Exist(redisKey))
             {
-                return SucceedPage(await _redis.Get<PageData<PackageDTO>>(redisKey));
+                packagesPage = await _redis.Get<PageData<Package>>(redisKey);
             }
-
-            Expression<Func<Package, bool>> expression = Expressionable.Create<Package>().
-                                                         AndIF(string.IsNullOrEmpty(keyword), p => p.Name!.Contains(keyword!)).
-                                                         ToExpression();
-            var packagesPage = await _packageService.QueryPageAsync(expression,
-                pageIndex, pageSize, null);
-            var result = packagesPage.ConvertTo<PackageDTO>(_mapper);
-            await _redis.Set(redisKey, result, _cacheTime);
-            return SucceedPage(result);
+            else
+            {
+                var expression = Expressionable.Create<Package>().AndIF(!string.IsNullOrEmpty(keyword), p => p.Name!.Contains(keyword!)).ToExpression();
+                packagesPage = await _packageService.GetPackagePageAsync(expression, pageIndex, pageSize, orderBy);
+                await _redis.Set(redisKey, packagesPage, _cacheTime);
+            }
+            return SucceedPage(packagesPage.ConvertTo<PackageDTO>(_mapper));
         }
 
         [HttpPost]

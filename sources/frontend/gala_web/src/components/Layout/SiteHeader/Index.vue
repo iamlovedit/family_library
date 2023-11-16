@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { h, Component, ref, watch, computed } from 'vue'
+import { h, Component, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NIcon } from 'naive-ui'
 import SiteIcon from '@components/icons/SiteIcon.vue'
@@ -45,31 +45,32 @@ import {
 } from '@vicons/ionicons5'
 import { DarkModeRound, LightModeRound } from '@vicons/material';
 import { useAppStore } from '@/stores/modules/app';
+import { t } from '@/locales'
+
 
 
 function renderIcon(icon: Component) {
     return () => h(NIcon, null, { default: () => h(icon) })
 }
-const activeKey = ref<string | null>();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
-
+const activeKey = ref<string>(route.name as string);
 const menuOptions: MenuOption[] = [
     {
-        label: '首页',
+        label: t('header.home'),
         key: 'home',
-        icon: renderIcon(HomeIcon)
+        // icon: renderIcon(HomeIcon)
     },
     {
-        label: '节点包',
+        label: t('header.packages'),
         key: 'packages',
-        icon: renderIcon(BookIcon),
+        // icon: renderIcon(BookIcon),
     },
     {
-        label: '族库',
+        label: t('header.family'),
         key: 'families',
-        icon: renderIcon(FileIcon)
+        // icon: renderIcon(FileIcon)
     }
 ]
 
@@ -95,20 +96,13 @@ const languageOptions = [
     }
 ];
 
-watch(() => route.path, () => {
-    activeKey.value = route.matched[0].name as string
-})
-
 const themeIcon = computed(() => {
     return appStore.appState.theme == 'dark' ? DarkModeRound : LightModeRound;
 });
 
 function handleUpdateValue(key: string) {
     router.push({
-        name: key,
-        params: {
-            lang: 'zh-CN'
-        }
+        name: key
     })
 }
 

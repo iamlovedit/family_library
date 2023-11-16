@@ -7,7 +7,7 @@ import { useAppStoreWithOut } from "@/stores/modules/app"
 
 const appStore = useAppStoreWithOut()
 
-const defaultLocale = appStore.appState.language || 'en-US'
+const defaultLocale = appStore.appState.language || 'zh-CN'
 
 const i18n = createI18n({
     locale: defaultLocale,
