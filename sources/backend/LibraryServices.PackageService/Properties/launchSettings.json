@@ -17,7 +17,7 @@
         "AES_KEY": "zxcvbnmasdfghjkl"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:9000"
     },
     "Docker": {
       "commandName": "Docker",

@@ -20,7 +20,7 @@
         "MINIO_ROOT_PASSWORD": "test@12315"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:9000"
+      "applicationUrl": "http://localhost:7000"
     },
     "Docker": {
       "commandName": "Docker",
