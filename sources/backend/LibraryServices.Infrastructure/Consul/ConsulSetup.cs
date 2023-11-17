@@ -3,6 +3,7 @@ using Consul.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SqlSugar.Extensions;
 
 namespace LibraryServices.Infrastructure.Consul
 {
@@ -25,14 +26,14 @@ namespace LibraryServices.Infrastructure.Consul
             services.AddConsul(options =>
             {
                 //consul client address
-                options.Address = new Uri($"{consulOption!.ConsulAddress}:{consulOption.ConsulPort}");
+                options.Address = new Uri(consulOption.ConsulAddress);
             });
 
             var httpCheck = new AgentServiceCheck()
             {
                 DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),
                 Interval = TimeSpan.FromSeconds(10),
-                HTTP = $"http://{consulOption!.IP}:{consulOption.Port}/health", //servcie health check url
+                HTTP = $"http://{consulOption!.Address}/{consulOption.HealthRoute}", //servcie health check url
                 Timeout = TimeSpan.FromSeconds(5)
             };
             services.AddConsulServiceRegistration(option =>
@@ -40,8 +41,8 @@ namespace LibraryServices.Infrastructure.Consul
                 option.Check = httpCheck;
                 option.ID = Guid.NewGuid().ToString();
                 option.Name = consulOption.Name;
-                option.Address = consulOption.IP;
-                option.Port = consulOption.Port;
+                option.Address = consulOption.Address;
+                option.Port = configuration["LISTENING_PORT"]?.ObjToInt()??throw new ArgumentNullException("listening port is null");
             });
         }
     }

@@ -5,12 +5,7 @@
         /// <summary>
         /// service ip
         /// </summary>
-        public string? IP { get; set; }
-
-        /// <summary>
-        /// service port
-        /// </summary>
-        public int Port { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// service name
@@ -23,9 +18,8 @@
         public string? ConsulAddress { get; set; }
 
         /// <summary>
-        /// consule client prot
+        /// health check route
         /// </summary>
-        public int ConsulPort { get; set; }
-
+        public string? HealthRoute { get; set; }
     }
 }

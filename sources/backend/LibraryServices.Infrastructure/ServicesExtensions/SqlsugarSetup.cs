@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using SqlSugar;
+using SqlSugar.Extensions;
 
 namespace LibraryServices.Infrastructure.ServicesExtensions
 {
@@ -27,7 +28,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
                 throw new ArgumentNullException(nameof(hostEnvironment));
             }
 
-            SnowFlakeSingle.WorkId = 1;
+            SnowFlakeSingle.WorkId = configuration["SNOWFLAKES_WORKID"]?.ObjToInt() ?? throw new ArgumentNullException("Snowflakes workid is null");
             var connectionString =
               $"server={configuration["POSTGRESQL_HOST"]};" +
               $"port={configuration["POSTGRESQL_PORT"]};" +
