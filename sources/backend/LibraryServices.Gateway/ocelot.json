@@ -5,13 +5,17 @@
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
       "DownstreamPathTemplate": "/parameter/{url}",
       "DownstreamScheme": "http",
+      "ServiceName": "library_parameter",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
       "RequestIdKey": "library_parameter",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "library_parameter",
-          "Port": 80
-        }
-      ],
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "library_parameter",
+      //    "Port": 80
+      //  }
+      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -31,12 +35,16 @@
       "DownstreamPathTemplate": "/family/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_family",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "library_family",
-          "Port": 80
-        }
-      ],
+      "ServiceName": "library_family",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "library_family",
+      //    "Port": 80
+      //  }
+      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -56,13 +64,16 @@
       "DownstreamPathTemplate": "/identity/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_identity",
-      "Priority": 0,
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "library_identity",
-          "Port": 80
-        }
-      ],
+      "ServiceName": "library_identity",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "library_identity",
+      //    "Port": 80
+      //  }
+      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -82,12 +93,16 @@
       "DownstreamPathTemplate": "/package/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_package",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "library_package",
-          "Port": 80
-        }
-      ],
+      "ServiceName": "library_package",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "library_package",
+      //    "Port": 80
+      //  }
+      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -111,6 +126,12 @@
     },
     "DownstreamHeaderTransform": {
       "X-Forwarded-For": "{RemoteIpAddress}"
+    },
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "consul_client",
+      "Port": 8500,
+      "Type": "Consul"
     }
   }
 }

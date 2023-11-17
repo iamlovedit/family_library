@@ -2,15 +2,17 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using LibraryServices.Infrastructure.ServicesExtensions;
 using Ocelot.Provider.Polly;
-
+using Ocelot.Provider.Consul;
+using LibraryServices.Infrastructure.Consul;
 const string _corsName = "cors";
 var builder = WebApplication.CreateBuilder(args);
-//builder.Configuration.AddOcelot(builder.Environment);
 var services = builder.Services;
-services.AddOcelot(builder.Configuration).AddPolly();
+services.AddOcelot(builder.Configuration).AddConsul().AddPolly();
 services.AddSerilogSetup(builder.Configuration);
 services.AddAuthorizationSetup(builder.Configuration);
 services.AddJwtAuthenticationSetup(builder.Configuration);
+services.AddHealthChecks();
+services.AddConsulSetup(builder.Configuration);
 
 services.AddCors(option =>
 {
@@ -30,7 +32,7 @@ builder.WebHost.ConfigureAppConfiguration((builderContext, builder) =>
 });
 
 var app = builder.Build();
-
+app.UseHealthChecks("/health");
 app.UseCors(_corsName);
 
 await app.UseOcelot().ConfigureAwait(true);

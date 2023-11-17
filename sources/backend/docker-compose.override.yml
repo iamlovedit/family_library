@@ -26,6 +26,7 @@ services:
     environment:
       - AUDIENCE_KEY=$AUDIENCE_KEY
       - TZ=$TIME_ZONE
+      - LISTENING_PORT=80 
 
     build:
       context: .
@@ -54,7 +55,7 @@ services:
       - MINIO_ROOT_USER=$MINIO_ROOT_USER
       - MINIO_ROOT_PASSWORD=$MINIO_ROOT_PASSWORD
       - SNOWFLAKES_WORKID=$SNOWFLAKES_WORKID
-      - LISTENING_PORT=7000 
+      - LISTENING_PORT=80 
     depends_on:
       - postgresql
       - redis
@@ -84,7 +85,7 @@ services:
       - AES_KEY=$AES_KEY
       - TZ=$TIME_ZONE
       - SNOWFLAKES_WORKID=$SNOWFLAKES_WORKID
-      - LISTENING_PORT=8000 
+      - LISTENING_PORT=80 
     depends_on:
       - postgresql
       - redis
@@ -114,7 +115,7 @@ services:
       - AES_KEY=$AES_KEY
       - TZ=$TIME_ZONE
       - SNOWFLAKES_WORKID=$SNOWFLAKES_WORKID
-      - LISTENING_PORT=9000
+      - LISTENING_PORT=80
     depends_on:
       - postgresql
       - redis
@@ -144,7 +145,7 @@ services:
       - AES_KEY=$AES_KEY
       - TZ=$TIME_ZONE
       - SNOWFLAKES_WORKID=$SNOWFLAKES_WORKID
-      - LISTENING_PORT=10000 
+      - LISTENING_PORT=80 
     depends_on:
       - postgresql
       - redis
