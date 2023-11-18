@@ -5,17 +5,11 @@
       "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
       "DownstreamPathTemplate": "/parameter/{url}",
       "DownstreamScheme": "http",
-      "ServiceName": "library_parameter",
+      "ServiceName": "library_services_parameter",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
       "RequestIdKey": "library_parameter",
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "library_parameter",
-      //    "Port": 80
-      //  }
-      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -27,6 +21,13 @@
         "ExceptionsAllowedBeforeBreaking": 3,
         "DurationOfBreak": 1000,
         "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     },
     {
@@ -35,16 +36,10 @@
       "DownstreamPathTemplate": "/family/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_family",
-      "ServiceName": "library_family",
+      "ServiceName": "library_services_family",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "library_family",
-      //    "Port": 80
-      //  }
-      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -56,6 +51,13 @@
         "ExceptionsAllowedBeforeBreaking": 3,
         "DurationOfBreak": 1000,
         "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     },
     {
@@ -64,16 +66,10 @@
       "DownstreamPathTemplate": "/identity/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_identity",
-      "ServiceName": "library_identity",
+      "ServiceName": "library_services_identity",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "library_identity",
-      //    "Port": 80
-      //  }
-      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -85,6 +81,13 @@
         "ExceptionsAllowedBeforeBreaking": 3,
         "DurationOfBreak": 1000,
         "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     },
     {
@@ -93,16 +96,10 @@
       "DownstreamPathTemplate": "/package/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_package",
-      "ServiceName": "library_package",
+      "ServiceName": "library_services_package",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "library_package",
-      //    "Port": 80
-      //  }
-      //],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -114,24 +111,25 @@
         "ExceptionsAllowedBeforeBreaking": 3,
         "DurationOfBreak": 1000,
         "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
       }
     }
   ],
   "GlobalConfiguration": {
     "BaseUrl": "library_gateway",
     "RouteIsCaseSensitive": false,
-    "UpstreamHeaderTransform": {
-      "From": "gateway",
-      "X-Forwarded-For": "{RemoteIpAddress}"
-    },
-    "DownstreamHeaderTransform": {
-      "X-Forwarded-For": "{RemoteIpAddress}"
-    },
     "ServiceDiscoveryProvider": {
       "Scheme": "http",
       "Host": "consul_client",
       "Port": 8500,
-      "Type": "Consul"
+      "Type": "Consul",
+      "ConfigurationKey": "Staging"
     }
   }
 }

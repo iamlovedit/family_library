@@ -68,7 +68,8 @@
       "Scheme": "http",
       "Host": "localhost",
       "Port": 8500,
-      "Type": "Consul"
+      "Type": "Consul",
+      "ConfigurationKey": "Development"
     }
   }
 }
