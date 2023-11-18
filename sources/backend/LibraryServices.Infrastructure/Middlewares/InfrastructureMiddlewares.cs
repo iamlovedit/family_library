@@ -1,7 +1,10 @@
-﻿using LibraryServices.Infrastructure.Seed;
+﻿using System.Net;
+using LibraryServices.Infrastructure.Seed;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace LibraryServices.Infrastructure.Middlewares
 {
@@ -19,10 +22,22 @@ namespace LibraryServices.Infrastructure.Middlewares
                 app.UseSwagger();
                 app.UseVersionedSwaggerUI();
             }
+
+            app.UseExceptionHandler(builder =>
+            {
+                builder.Run(async context =>
+                {
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    var message = new MessageData<Exception>(false, "An exception was thrown", 500);
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
+                });
+            });
+            
             app.MapHealthChecks("health");
 
             app.UseCors("cors");
-
+            
             app.UseAuthentication();
 
             app.UseRouting();
