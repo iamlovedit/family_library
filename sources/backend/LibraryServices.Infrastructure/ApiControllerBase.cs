@@ -1,5 +1,4 @@
 ﻿using LibraryServices.Infrastructure.Sercurity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,7 @@ namespace LibraryServices.Infrastructure
     [ApiController]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = PermissionConstants.POLICY_NAME)]
+    [Authorize(Policy = PermissionConstants.POLICY_NAME)]
     public class ApiControllerBase : ControllerBase
     {
         [NonAction]
