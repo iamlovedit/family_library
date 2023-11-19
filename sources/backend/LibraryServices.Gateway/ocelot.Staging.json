@@ -1,0 +1,135 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/parameter/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/parameter/{url}",
+      "DownstreamScheme": "http",
+      "ServiceName": "library_services_parameter",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "RequestIdKey": "library_parameter",
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 5,
+        "Limit": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/family/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/family/{url}",
+      "DownstreamScheme": "http",
+      "RequestIdKey": "library_family",
+      "ServiceName": "library_services_family",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 5,
+        "Limit": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/identity/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/identity/{url}",
+      "DownstreamScheme": "http",
+      "RequestIdKey": "library_identity",
+      "ServiceName": "library_services_identity",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 5,
+        "Limit": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/package/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/package/{url}",
+      "DownstreamScheme": "http",
+      "RequestIdKey": "library_package",
+      "ServiceName": "library_services_package",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 5,
+        "Limit": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
+        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "library_gateway",
+    "RouteIsCaseSensitive": false,
+    "ServiceDiscoveryProvider": {
+      "Scheme": "http",
+      "Host": "consul_client",
+      "Port": 8500,
+      "Type": "Consul",
+      "ConfigurationKey": "Staging"
+    }
+  }
+}

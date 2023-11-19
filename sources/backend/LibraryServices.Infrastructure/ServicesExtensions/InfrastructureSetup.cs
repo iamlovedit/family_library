@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LibraryServices.Infrastructure.Consul;
 using LibraryServices.Infrastructure.Filters;
 using LibraryServices.Infrastructure.Repository;
 using LibraryServices.Infrastructure.Sercurity;
@@ -22,6 +23,8 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             var services = builder.Services;
             var configuration = builder.Configuration;
 
+            services.AddHealthChecks();
+            services.AddConsulSetup(configuration);
             services.AddSingleton<SecurityTokenValidator>();
             services.AddSingleton<IAESEncryptionService, AESEncryptionService>();
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerOptionsPostConfigureOptions>();

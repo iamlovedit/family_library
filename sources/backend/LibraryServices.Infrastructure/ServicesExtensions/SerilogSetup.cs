@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Serilog;
+using Serilog.Filters;
 
 namespace LibraryServices.Infrastructure.ServicesExtensions
 {
@@ -21,6 +22,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             }
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
+                .Filter.ByExcluding("RequestPath like '/health'")
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .WriteTo.Console()
                 .WriteTo.File(Path.Combine("logs", "log"), rollingInterval: RollingInterval.Hour)

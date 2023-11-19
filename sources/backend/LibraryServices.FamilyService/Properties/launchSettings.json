@@ -17,10 +17,12 @@
         "AES_KEY": "zxcvbnmasdfghjkl",
         "MINIO_HOST": "files.youngala.com",
         "MINIO_ROOT_USER": "test",
-        "MINIO_ROOT_PASSWORD": "test@12315"
+        "MINIO_ROOT_PASSWORD": "test@12315",
+        "LISTENING_PORT": "7000",
+        "SNOWFLAKES_WORKID": "1"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:9000"
+      "applicationUrl": "http://localhost:7000"
     },
     "Docker": {
       "commandName": "Docker",

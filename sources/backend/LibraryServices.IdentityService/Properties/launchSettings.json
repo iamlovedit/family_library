@@ -14,10 +14,12 @@
         "REDIS_HOST": "localhost",
         "REDIS_PASSWORD": "pass@word",
         "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
-        "AES_KEY": "zxcvbnmasdfghjkl"
+        "AES_KEY": "zxcvbnmasdfghjkl",
+        "LISTENING_PORT": "8000",
+        "SNOWFLAKES_WORKID": "1"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:7000"
+      "applicationUrl": "http://localhost:8000"
     },
     "Docker": {
       "commandName": "Docker",
