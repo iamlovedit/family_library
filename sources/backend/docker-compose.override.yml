@@ -1,18 +1,6 @@
 version: "3.4"
 
 services:
-  # library_gateway:
-  #   restart: on-failure
-  #   container_name: "library_gateway"
-  #   networks:
-  #     - "library_services_net"
-  #   image: envoyproxy/envoy:v1.11.1
-  #   ports:
-  #     - "5000:80"
-  #     - "6001:6001"
-  #   volumes:
-  #     - ./envoy.yaml:/etc/envoy/envoy.yaml
-
   library_gateway:
     image: ${DOCKER_REGISTRY-}library_gateway
     container_name: "library_gateway"
