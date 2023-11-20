@@ -202,14 +202,14 @@ services:
     container_name: "consul_service"
     networks:
       - library_services_net
-    command: agent -server -client=0.0.0.0 -bootstrap-expect=2 -node=library_consul_service
+    command: agent -server -client=0.0.0.0 -datacenter=libaray_services -bootstrap-expect=2 -node=library_consul_service
     volumes:
       - ~/docker/consul/data/consul_service:/data
 
   consul_service1:
     image: consul:1.15.4
     container_name: "consul_service1"
-    command: agent -server -client=0.0.0.0 -retry-join=consul_service -node=library_consul_service1
+    command: agent -server -client=0.0.0.0 -datacenter=libaray_services  -retry-join=consul_service -node=library_consul_service1
     networks:
       - library_services_net
     volumes:
@@ -220,7 +220,7 @@ services:
   consul_client:
     image: consul:1.15.4
     container_name: "consul_client"
-    command: agent -client=0.0.0.0 -retry-join=consul_service -ui -node=consul_client
+    command: agent -client=0.0.0.0 -datacenter=libaray_services -retry-join=consul_service -ui -node=consul_client
     networks:
       - library_services_net
     ports:
