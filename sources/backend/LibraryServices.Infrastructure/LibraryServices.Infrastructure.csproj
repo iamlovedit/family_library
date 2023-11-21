@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LibraryServices.Domain\LibraryServices.Domain.csproj" />
+    <ProjectReference Include="..\LibraryServices.EventBus\LibraryServices.EventBus.csproj" />
   </ItemGroup>
 
 </Project>
