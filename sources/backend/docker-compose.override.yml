@@ -155,18 +155,6 @@ services:
       TZ: "GMT+8"
       PGTZ: "GMT+8"
 
-  postgresql_slave:
-    container_name: "postgresql_slave"
-    image: "postgres"
-    restart: unless-stopped
-    environment:
-      - POSTGRES_MASTER_HOST=postgresql
-      - POSTGRES_REPLICATE_FROM=postgresql
-      - TZ="GMT+8"
-      - PGTZ="GMT+8"
-    networks:
-      - "library_services_net"
-
   redis:
     networks:
       - "library_services_net"
