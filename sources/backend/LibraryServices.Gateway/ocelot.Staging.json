@@ -7,7 +7,7 @@
       "DownstreamScheme": "http",
       "ServiceName": "library_services_parameter",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+        "Type": "LeastConnection"
       },
       "RequestIdKey": "library_parameter",
       "RateLimitOptions": {
@@ -38,7 +38,7 @@
       "RequestIdKey": "library_family",
       "ServiceName": "library_services_family",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+        "Type": "LeastConnection"
       },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -68,7 +68,7 @@
       "RequestIdKey": "library_identity",
       "ServiceName": "library_services_identity",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+        "Type": "LeastConnection"
       },
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -98,7 +98,7 @@
       "RequestIdKey": "library_package",
       "ServiceName": "library_services_package",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin"
+        "Type": "LeastConnection"
       },
       "RateLimitOptions": {
         "ClientWhitelist": [],

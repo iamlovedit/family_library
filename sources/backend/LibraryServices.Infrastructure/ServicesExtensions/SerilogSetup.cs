@@ -4,22 +4,19 @@ using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Serilog;
 using Serilog.Filters;
+using Microsoft.AspNetCore.Builder;
 
 namespace LibraryServices.Infrastructure.ServicesExtensions
 {
     public static class SerilogSetup
     {
-        public static void AddSerilogSetup(this IServiceCollection services, IConfiguration configuration)
+        public static void AddSerilogSetup(this WebApplicationBuilder builder)
         {
-            if (services is null)
+            if (builder is null)
             {
-                throw new ArgumentNullException(nameof(services));
+                throw new ArgumentNullException(nameof(builder));
             }
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Filter.ByExcluding("RequestPath like '/health'")
@@ -27,11 +24,13 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
                 .WriteTo.Console()
                 .WriteTo.File(Path.Combine("logs", "log"), rollingInterval: RollingInterval.Hour)
                 .CreateLogger();
-            services.AddLogging(builder =>
+            builder.Services.AddLogging(builder =>
             {
                 builder.ClearProviders();
                 builder.AddSerilog(Log.Logger);
             });
+
+            builder.Host.UseSerilog(Log.Logger, true);
         }
     }
 }

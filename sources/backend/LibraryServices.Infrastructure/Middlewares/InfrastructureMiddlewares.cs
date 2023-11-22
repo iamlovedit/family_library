@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Serilog;
+using Serilog.Events;
 
 namespace LibraryServices.Infrastructure.Middlewares
 {
@@ -33,11 +35,11 @@ namespace LibraryServices.Infrastructure.Middlewares
                     await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
                 });
             });
-            
+
             app.MapHealthChecks("health");
 
             app.UseCors("cors");
-            
+
             app.UseAuthentication();
 
             app.UseRouting();
@@ -46,8 +48,36 @@ namespace LibraryServices.Infrastructure.Middlewares
 
             app.MapControllers();
 
+            app.UseSerilogLogging();
+
             app.Run();
         }
+
+        public static void UseSerilogLogging(this WebApplication app)
+        {
+            if (app is null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+            app.UseSerilogRequestLogging(options =>
+            {
+                // Customize the message template
+                options.MessageTemplate = "{RemoteIpAddress} {RequestScheme} {RequestHost} {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+
+                // Emit debug-level events instead of the defaults
+                // options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.;
+
+                // Attach additional properties to the request completion event
+                options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+                {
+                    diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                    diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+                    diagnosticContext.Set("RemoteIpAddress", httpContext.Connection.RemoteIpAddress);
+                };
+            });
+        }
+
+
         public static void UseInitSeed(this IApplicationBuilder app, Action<DatabaseSeed> seedBuilder)
         {
             if (app == null)

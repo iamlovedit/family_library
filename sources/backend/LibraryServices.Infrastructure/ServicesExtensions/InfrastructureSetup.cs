@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 
 namespace LibraryServices.Infrastructure.ServicesExtensions
 {
@@ -83,7 +84,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
 
             services.AddAuthorizationSetup(configuration);
 
-            services.AddSerilogSetup(configuration);
+            builder.AddSerilogSetup();
 
             services.AddSwaggerGen();
         }
