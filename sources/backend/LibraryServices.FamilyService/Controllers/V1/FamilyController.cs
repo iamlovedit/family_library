@@ -128,7 +128,7 @@ namespace LibraryServices.FamilyService.Controllers.V1
                 .ToExpression();
 
             var familyPage = await _familyService.GetFamilyPageAsync(expression, pageIndex,
-                pageSize, $"{order} DESC");
+                pageSize, order);
             var familyPageDto = familyPage.ConvertTo<FamilyBasicDTO>(_mapper);
             await _redis.Set(redisKey, familyPageDto, _redisRequirement.CacheTime);
             return SucceedPage(familyPageDto);
