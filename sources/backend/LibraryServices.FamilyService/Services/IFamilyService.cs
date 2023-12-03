@@ -29,11 +29,17 @@ public class FamilyService : ServiceBase<Family>, IFamilyService
     }
     public async Task<PageData<Family>> GetFamilyPageAsync(Expression<Func<Family, bool>>? whereExpression, int pageIndex = 1, int pageSize = 20, string? orderByFields = null)
     {
+        var orderModels = default(List<OrderByModel>);
+        if (!string.IsNullOrEmpty(orderByFields))
+        {
+            var fieldName = DAL.DbContext.EntityMaintenance.GetDbColumnName<Family>(orderByFields);
+            orderModels = OrderByModel.Create(new OrderByModel() { FieldName = fieldName, OrderByType = OrderByType.Desc });
+        }
         RefAsync<int> totalCount = 0;
         var list = await DAL.DbContext.Queryable<Family>()
             .Includes(f => f.Uploader)
             .Includes(f => f.Category)
-            .OrderByIF(!string.IsNullOrEmpty(orderByFields), orderByFields)
+            .OrderBy(orderModels)
             .WhereIF(whereExpression != null, whereExpression)
             .ToPageListAsync(pageIndex, pageSize, totalCount);
         var pageCount = Math.Ceiling(totalCount.ObjToDecimal() / pageSize.ObjToDecimal()).ObjToInt();
