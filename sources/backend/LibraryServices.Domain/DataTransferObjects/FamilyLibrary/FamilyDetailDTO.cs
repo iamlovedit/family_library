@@ -28,6 +28,5 @@ namespace LibraryServices.Domain.DataTransferObjects.FamilyLibrary
         public DateTime CreatedDate { get; set; }
 
         public string? Description { get; set; }
-
     }
 }

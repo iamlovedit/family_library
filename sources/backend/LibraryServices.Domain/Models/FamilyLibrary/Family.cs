@@ -66,7 +66,7 @@ namespace LibraryServices.Domain.Models.FamilyLibrary
 
         public string GetFilePath(ushort version)
         {
-            return Path.Combine("families", $"{version}", $"{FileId}.rfa");
+            return Path.Combine($"{version}", $"{FileId}.rfa");
         }
         public string GetImagePath()
         {
