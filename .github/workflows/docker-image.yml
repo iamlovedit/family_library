@@ -1,3 +1,44 @@
+# name: Docker Image CI
+
+# on:
+#   push:
+#     branches: ["preproduction"]
+#   pull_request:
+#     branches: ["main"]
+
+# jobs:
+#   docker:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#       - name: checkout repo
+#         uses: actions/checkout@v2.3.4
+#       - name: Build and push image
+#         working-directory: ./sources/backend
+#         env:
+#           USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+#         run: |
+#           docker build -t $USERNAME/library.gateway -f ./LibraryServices.Gateway/Dockerfile .
+#           docker push $USERNAME/library.gateway
+
+#           docker build -t $USERNAME/library.family -f ./LibraryServices.FamilyService/Dockerfile .
+#           docker push $USERNAME/library.family
+
+#           docker build -t $USERNAME/library.identity -f ./LibraryServices.IdentityService/Dockerfile .
+#           docker push $USERNAME/library.identity
+
+#           docker build -t $USERNAME/library.package -f ./LibraryServices.PackageService/Dockerfile .
+#           docker push $USERNAME/library.package
+
+#           docker build -t $USERNAME/library.parameter -f ./LibraryServices.ParameterService/Dockerfile .
+#           docker push $USERNAME/library.parameter
+
 name: Docker Image CI
 
 on:
@@ -8,6 +49,25 @@ on:
 
 jobs:
   docker:
+    name: push docker image
+    strategy:
+      matrix:
+        image:
+          [
+            library.gateway,
+            library.family,
+            library.identity,
+            library.package,
+            library.parameter,
+          ]
+        project:
+          [
+            LibraryServices.Gateway,
+            LibraryServices.FamilyService,
+            LibraryServices.IdentityService,
+            LibraryServices.PackageService,
+            LibraryServices.ParameterService,
+          ]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
@@ -18,23 +78,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: checkout repo
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v4.0.0
       - name: Build and push image
         working-directory: ./sources/backend
         env:
           USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
-          docker build -t $USERNAME/library.gateway -f ./LibraryServices.Gateway/Dockerfile .
-          docker push $USERNAME/library.gateway
-
-          docker build -t $USERNAME/library.family -f ./LibraryServices.FamilyService/Dockerfile .
-          docker push $USERNAME/library.family          
-
-          docker build -t $USERNAME/library.identity -f ./LibraryServices.IdentityService/Dockerfile .
-          docker push $USERNAME/library.identity
-
-          docker build -t $USERNAME/library.package -f ./LibraryServices.PackageService/Dockerfile .
-          docker push $USERNAME/library.package
-
-          docker build -t $USERNAME/library.parameter -f ./LibraryServices.ParameterService/Dockerfile .
-          docker push $USERNAME/library.parameter
+          docker build -t $USERNAME/${{ matrix.image }} -f ./${{ matrix.project }}/Dockerfile .
+          docker push $USERNAME/${{ matrix.image }}
