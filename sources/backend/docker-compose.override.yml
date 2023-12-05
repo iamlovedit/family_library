@@ -29,6 +29,7 @@ services:
     networks:
       - "library_services_net"
     environment:
+      - ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
       - POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD
       - POSTGRESQL_HOST=$POSTGRESQL_HOST
       - POSTGRESQL_DATABASE=$POSTGRESQL_DATABASE
@@ -62,6 +63,7 @@ services:
     volumes:
       - ~/docker/logs/identity:/app/logs
     environment:
+      - ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
       - POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD
       - POSTGRESQL_HOST=$POSTGRESQL_HOST
       - POSTGRESQL_DATABASE=$POSTGRESQL_DATABASE
@@ -92,6 +94,7 @@ services:
     volumes:
       - ~/docker/logs/package:/app/logs
     environment:
+      - ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
       - POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD
       - POSTGRESQL_HOST=$POSTGRESQL_HOST
       - POSTGRESQL_DATABASE=$POSTGRESQL_DATABASE
@@ -122,6 +125,7 @@ services:
     volumes:
       - ~/docker/logs/parameter:/app/logs
     environment:
+      - ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
       - POSTGRESQL_PASSWORD=$POSTGRESQL_PASSWORD
       - POSTGRESQL_HOST=$POSTGRESQL_HOST
       - POSTGRESQL_DATABASE=$POSTGRESQL_DATABASE
