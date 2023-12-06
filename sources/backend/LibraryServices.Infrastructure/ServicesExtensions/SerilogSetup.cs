@@ -20,6 +20,8 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Filter.ByExcluding("RequestPath like '/health'")
+                .Filter.ByExcluding("StartsWith(@m,'requestId: no request id, previousRequestId: no previous request id, message: Started polling')")
+                .Filter.ByExcluding("StartsWith(@m,'requestId: no request id, previousRequestId: no previous request id, message: Finished polling')")
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .WriteTo.Console()
                 .WriteTo.File(Path.Combine("logs", "log"), rollingInterval: RollingInterval.Hour)
