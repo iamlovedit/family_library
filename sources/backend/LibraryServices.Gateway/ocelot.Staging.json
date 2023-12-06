@@ -23,7 +23,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -53,7 +52,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -83,7 +81,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -113,7 +110,35 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      },
+      "DownstreamHeaderTransform": {
+        "X-Forwarded-For": "{RemoteIpAddress}"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/parameter/{url}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "DownstreamPathTemplate": "/parameter/{url}",
+      "DownstreamScheme": "http",
+      "RequestIdKey": "library_parameter",
+      "ServiceName": "library_services_parameter",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1s",
+        "PeriodTimespan": 5,
+        "Limit": 1
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 5000
+      },
+      "UpstreamHeaderTransform": {
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
