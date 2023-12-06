@@ -8,17 +8,17 @@ services:
     networks:
       - "library_services_net"
     volumes:
-      - ~/docker/library_services/logs/family:/app/logs
+      - ~/docker/library_services/logs/gateway:/app/logs
     ports:
-      - "5000:80"    
+      - "5000:80"
     environment:
       - AUDIENCE_KEY=${AUDIENCE_KEY}
       - TZ=${TIME_ZONE}
-      - LISTENING_PORT=80 
+      - LISTENING_PORT=80
 
     build:
       context: .
-      dockerfile: LibraryServices.Gateway/Dockerfile    
+      dockerfile: LibraryServices.Gateway/Dockerfile
 
   library_family:
     image: ${DOCKER_REGISTRY-}library_family
@@ -44,7 +44,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - LISTENING_PORT=80 
+      - LISTENING_PORT=80
     depends_on:
       - postgresql
       - redis
@@ -78,7 +78,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - LISTENING_PORT=80 
+      - LISTENING_PORT=80
     depends_on:
       - postgresql
       - redis
@@ -112,7 +112,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - LISTENING_PORT=80 
+      - LISTENING_PORT=80
     depends_on:
       - postgresql
       - redis
@@ -146,7 +146,7 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - LISTENING_PORT=80 
+      - LISTENING_PORT=80
     depends_on:
       - postgresql
       - redis
@@ -161,7 +161,7 @@ services:
     image: "postgres"
     restart: unless-stopped
     volumes:
-      - ~/docker/postgresql/data:/var/lib/postgresql/data  
+      - ~/docker/postgresql/data:/var/lib/postgresql/data
     ports:
       - "${POSTGRESQL_PORT}:5432"
     networks:
@@ -199,7 +199,7 @@ services:
       - "5341:80"
     networks:
       - library_services_net
-    
+
   consul_service:
     image: consul:1.15.4
     container_name: "consul_service"
