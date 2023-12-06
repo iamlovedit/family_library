@@ -2,7 +2,12 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/parameter/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/parameter/{url}",
       "DownstreamScheme": "http",
       "ServiceName": "library_services_parameter",
@@ -31,7 +36,12 @@
     },
     {
       "UpstreamPathTemplate": "/family/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/family/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_family",
@@ -60,7 +70,12 @@
     },
     {
       "UpstreamPathTemplate": "/identity/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/identity/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_identity",
@@ -89,40 +104,16 @@
     },
     {
       "UpstreamPathTemplate": "/package/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/package/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_package",
       "ServiceName": "library_services_package",
-      "LoadBalancerOptions": {
-        "Type": "LeastConnection"
-      },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1s",
-        "PeriodTimespan": 5,
-        "Limit": 1
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 1000,
-        "TimeoutValue": 5000
-      },
-      "UpstreamHeaderTransform": {
-        "X-Forwarded-For": "{RemoteIpAddress}"
-      },
-      "DownstreamHeaderTransform": {
-        "X-Forwarded-For": "{RemoteIpAddress}"
-      }
-    },
-    {
-      "UpstreamPathTemplate": "/parameter/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
-      "DownstreamPathTemplate": "/parameter/{url}",
-      "DownstreamScheme": "http",
-      "RequestIdKey": "library_parameter",
-      "ServiceName": "library_services_parameter",
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       },
