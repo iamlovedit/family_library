@@ -9,7 +9,7 @@ const string _corsName = "cors";
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 services.AddOcelot(builder.Configuration).AddConsul().AddConfigStoredInConsul().AddPolly();
-builder.AddSerilogSetup();
+builder.AddSerilogSetup(builder.Configuration);
 services.AddHealthChecks();
 services.AddConsulSetup(builder.Configuration);
 
