@@ -12,7 +12,7 @@ namespace LibraryServices.Domain.Models.Dynamo
         [SugarColumn(IsPrimaryKey = true, IsNullable = false, ColumnName = "version_packageId")]
         public string? PackageId { get; set; }
 
-        [SugarColumn(ColumnName = "package_url")]
+        [SugarColumn(ColumnName = "package_url", IsNullable = true)]
         public string? Url { get; set; }
 
         [JsonProperty("created")]

@@ -87,7 +87,7 @@ namespace LibraryServices.PackageService.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize(Roles = PermissionConstants.SUPERADMINISTATOR)]
+        [Authorize(Roles = PermissionConstants.ADMINISTATOR)]
         public async Task<MessageData<string>> UpdateAsync([FromServices] IHttpClientFactory clientFactory,
       [FromServices] DatabaseContext appDbContext, [FromServices] IUnitOfWork unitOfWork)
         {
@@ -185,6 +185,89 @@ namespace LibraryServices.PackageService.Controllers.V1
                 }
             }
             return Failed($"request failed,http status code {responseMessage.StatusCode}");
+        }
+
+        [HttpPost("update")]
+        [DisableRequestSizeLimit]
+        [RequestSizeLimit(int.MaxValue)]
+        [Authorize(Roles = PermissionConstants.ADMINISTATOR)]
+        public async Task<MessageData<string>> UpdateByPackagesAsync([FromServices] IUnitOfWork unitOfWork, [FromServices] DatabaseContext appDbContext, [FromBody] List<Package> packages)
+        {
+            try
+            {
+                var packageDb = appDbContext.GetEntityDB<Package>();
+                var packageVersionDb = appDbContext.GetEntityDB<PackageVersion>();
+                var oldPackages = await packageDb.GetListAsync();
+                var oldPackageVersions = await packageVersionDb.GetListAsync();
+                unitOfWork.BeginTransaction();
+                var addedPackages = new List<Package>();
+                var addedPackageVersions = new List<PackageVersion>();
+                var newPackageVersions = new List<PackageVersion>();
+                foreach (var package in packages)
+                {
+                    var oldPackage = oldPackages.FirstOrDefault(p => p.Id == package.Id);
+                    if (oldPackage is null)
+                    {
+                        addedPackages.Add(package);
+                    }
+                    else
+                    {
+                        await packageDb.UpdateAsync(package);
+                    }
+
+                    foreach (var pVersion in package.Versions)
+                    {
+                        pVersion.PackageId = package.Id;
+                        var oldPackageVersion = oldPackageVersions.FirstOrDefault(pv =>
+                            pv.PackageId == package.Id && pv.Version == pVersion.Version);
+                        if (oldPackageVersion is null)
+                        {
+                            addedPackageVersions.Add(pVersion);
+                        }
+                        else
+                        {
+                            await packageVersionDb.UpdateAsync(pVersion);
+                        }
+
+                        newPackageVersions.Add(pVersion);
+                    }
+                }
+
+                await packageDb.InsertRangeAsync(addedPackages);
+                await packageVersionDb.InsertRangeAsync(addedPackageVersions);
+
+                foreach (var package in oldPackages)
+                {
+                    var newPackage = packages.FirstOrDefault(p => p.Id == package.Id);
+                    if (newPackage is null)
+                    {
+                        package.IsDeleted = true;
+                        await packageDb.UpdateAsync(package);
+                    }
+                }
+
+                foreach (var pVersion in oldPackageVersions)
+                {
+                    var newVersion = newPackageVersions.FirstOrDefault(pv =>
+                        pv.PackageId == pVersion.PackageId && pv.Version == pVersion.Version);
+                    if (newVersion is null)
+                    {
+                        pVersion.IsDeleted = true;
+                        await packageVersionDb.UpdateAsync(pVersion);
+                    }
+                }
+
+                _logger.LogInformation("added new package count {added},added new version count {addedverson}",
+                    addedPackages.Count, addedPackageVersions.Count);
+                unitOfWork.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollbackTransaction();
+                _logger.LogError(e, e.Message);
+                return Failed(e.Message);
+            }
+            return Success("更新完成");
         }
     }
 }
