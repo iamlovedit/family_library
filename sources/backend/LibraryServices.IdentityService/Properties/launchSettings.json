@@ -16,7 +16,9 @@
         "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
         "AES_KEY": "zxcvbnmasdfghjkl",
         "LISTENING_PORT": "8000",
-        "SNOWFLAKES_WORKID": "1"
+        "SNOWFLAKES_WORKID": "1",
+        "SEQ_URL": "http://localhost:5341",
+        "SEQ_APIKEY": "yeEZyL3SMcxEKUijBjN"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:8000"

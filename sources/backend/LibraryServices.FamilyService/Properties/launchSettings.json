@@ -19,7 +19,9 @@
         "MINIO_ROOT_USER": "test",
         "MINIO_ROOT_PASSWORD": "test@12315",
         "LISTENING_PORT": "7000",
-        "SNOWFLAKES_WORKID": "1"
+        "SNOWFLAKES_WORKID": "1",
+        "SEQ_URL": "http://localhost:5341",
+        "SEQ_APIKEY": "yeEZyL3SMcxEKUijBjN"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:7000"

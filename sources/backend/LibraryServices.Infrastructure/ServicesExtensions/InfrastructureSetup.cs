@@ -84,7 +84,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
 
             services.AddAuthorizationSetup(configuration);
 
-            builder.AddSerilogSetup();
+            builder.AddSerilogSetup(configuration);
 
             services.AddSwaggerGen();
         }

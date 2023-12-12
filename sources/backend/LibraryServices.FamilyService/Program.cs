@@ -12,7 +12,8 @@ builder.AddInfrastructureSetup();
 
 services.AddMinio(client =>
 {
-    client.WithEndpoint(configuration["MINIO_HOST"]).WithCredentials(configuration["MINIO_ROOT_USER"], configuration["MINIO_ROOT_PASSWORD"]);
+    client.WithEndpoint(configuration["MINIO_HOST"])
+          .WithCredentials(configuration["MINIO_ROOT_USER"], configuration["MINIO_ROOT_PASSWORD"]);
 });
 var app = builder.Build();
 

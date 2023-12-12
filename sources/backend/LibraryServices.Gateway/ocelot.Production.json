@@ -2,7 +2,12 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/parameter/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/parameter/{url}",
       "DownstreamScheme": "http",
       "ServiceName": "library_services_parameter",
@@ -23,7 +28,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -32,7 +36,12 @@
     },
     {
       "UpstreamPathTemplate": "/family/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/family/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_family",
@@ -53,7 +62,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -62,7 +70,12 @@
     },
     {
       "UpstreamPathTemplate": "/identity/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/identity/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_identity",
@@ -83,7 +96,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -92,7 +104,12 @@
     },
     {
       "UpstreamPathTemplate": "/package/{url}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ],
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "DELETE"
+      ],
       "DownstreamPathTemplate": "/package/{url}",
       "DownstreamScheme": "http",
       "RequestIdKey": "library_package",
@@ -113,7 +130,6 @@
         "TimeoutValue": 5000
       },
       "UpstreamHeaderTransform": {
-        "From": "gateway",
         "X-Forwarded-For": "{RemoteIpAddress}"
       },
       "DownstreamHeaderTransform": {
@@ -129,7 +145,7 @@
       "Host": "consul_client",
       "Port": 8500,
       "Type": "Consul",
-      "ConfigurationKey": "Staging"
+      "ConfigurationKey": "Production"
     }
   }
 }

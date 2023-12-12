@@ -62,7 +62,7 @@ namespace LibraryServices.Infrastructure.Middlewares
             app.UseSerilogRequestLogging(options =>
             {
                 // Customize the message template
-                options.MessageTemplate = "{RemoteIpAddress} {RequestScheme} {RequestHost} {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms";
+                options.MessageTemplate = "[{RemoteIpAddress}] [{RequestScheme}] [{RequestHost}] [{RequestMethod}] [{RequestPath}] responded [{StatusCode}] in [{Elapsed:0.0000}] ms";
 
                 // Emit debug-level events instead of the defaults
                 // options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.;
@@ -72,7 +72,7 @@ namespace LibraryServices.Infrastructure.Middlewares
                 {
                     diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
                     diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
-                    diagnosticContext.Set("RemoteIpAddress", httpContext.Connection.RemoteIpAddress);
+                    diagnosticContext.Set("RemoteIpAddress", httpContext.Request.Headers["X-Forwarded-For"].ToString());
                 };
             });
         }
