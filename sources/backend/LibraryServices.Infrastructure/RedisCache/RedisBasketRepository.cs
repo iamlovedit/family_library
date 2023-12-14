@@ -99,12 +99,8 @@ namespace LibraryServices.Infrastructure.RedisCache
 
         public async Task<long> ListRightPushAsync(string redisKey, IEnumerable<string> redisValue, int db = -1)
         {
-            var redislist = new List<RedisValue>();
-            foreach (var item in redisValue)
-            {
-                redislist.Add(item);
-            }
-            return await _database.ListRightPushAsync(redisKey, redislist.ToArray());
+            var redislist = redisValue.Select(r => (RedisValue)r).ToArray();
+            return await _database.ListRightPushAsync(redisKey, redislist);
         }
 
         public async Task<T> ListLeftPopAsync<T>(string redisKey, int db = -1) where T : class
@@ -152,6 +148,21 @@ namespace LibraryServices.Infrastructure.RedisCache
         public async Task ListClearAsync(string redisKey, int db = -1)
         {
             await _database.ListTrimAsync(redisKey, 1, 0);
+        }
+
+        public async Task<List<T>> GetValues<T>(string[] keys) where T : class
+        {
+            var redisKeys = keys.Select(k => new RedisKey(k)).ToArray();
+            var redisValues = await _database.StringGetAsync(redisKeys);
+            var result = new List<T>();
+            foreach (var value in redisValues)
+            {
+                if (value.HasValue)
+                {
+                    result.Add(JsonConvert.DeserializeObject<T>(value));
+                }
+            }
+            return result;
         }
     }
 }
