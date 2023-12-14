@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Text;
@@ -68,6 +69,25 @@ namespace LibraryServices.Infrastructure.RedisCache
             }
         }
 
+        public async Task<bool> SetValues(Dictionary<string, object> valuePairs, TimeSpan cacheTime)
+        {
+            var transaction = _database.CreateTransaction();
+            foreach (var pair in valuePairs)
+            {
+                if (pair.Value is string value)
+                {
+                    await _database.StringSetAsync(pair.Key, value, cacheTime);
+                }
+                else
+                {
+                    var jsonString = JsonConvert.SerializeObject(pair.Value);
+                    var buffer = Encoding.UTF8.GetBytes(jsonString);
+                    await _database.StringSetAsync(pair.Key, buffer, cacheTime);
+                }
+            }
+            return await transaction.ExecuteAsync();
+        }
+
         public async Task<TEntity> Get<TEntity>(string key)
         {
             var value = await _database.StringGetAsync(key);
@@ -80,6 +100,21 @@ namespace LibraryServices.Infrastructure.RedisCache
             {
                 return default(TEntity);
             }
+        }
+
+        public async Task<List<T>> GetValues<T>(string[] keys) where T : class
+        {
+            var redisKeys = keys.Select(k => new RedisKey(k)).ToArray();
+            var redisValues = await _database.StringGetAsync(redisKeys);
+            var result = new List<T>();
+            foreach (var value in redisValues)
+            {
+                if (value.HasValue)
+                {
+                    result.Add(JsonConvert.DeserializeObject<T>(value));
+                }
+            }
+            return result;
         }
 
         public async Task<RedisValue[]> ListRangeAsync(string redisKey)
@@ -150,19 +185,6 @@ namespace LibraryServices.Infrastructure.RedisCache
             await _database.ListTrimAsync(redisKey, 1, 0);
         }
 
-        public async Task<List<T>> GetValues<T>(string[] keys) where T : class
-        {
-            var redisKeys = keys.Select(k => new RedisKey(k)).ToArray();
-            var redisValues = await _database.StringGetAsync(redisKeys);
-            var result = new List<T>();
-            foreach (var value in redisValues)
-            {
-                if (value.HasValue)
-                {
-                    result.Add(JsonConvert.DeserializeObject<T>(value));
-                }
-            }
-            return result;
-        }
+
     }
 }

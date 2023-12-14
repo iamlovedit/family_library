@@ -13,6 +13,8 @@ namespace LibraryServices.Infrastructure.RedisCache
 
         Task Set(string key, object value, TimeSpan cacheTime);
 
+        Task<bool> SetValues(Dictionary<string, object> valuePairs, TimeSpan cacheTime);
+
         Task<bool> Exist(string key);
 
         Task Remove(string key);
