@@ -205,7 +205,7 @@ services:
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
-      - SEQ_FIRSTRUN_ADMINPASSWORDHASH=“${SEQ_ADMINPASSWORD}”
+      - SEQ_FIRSTRUN_ADMINPASSWORDHASH=${SEQ_ADMINPASSWORD}
     volumes:
       - ~/docker/seq/data:/data
     ports:
