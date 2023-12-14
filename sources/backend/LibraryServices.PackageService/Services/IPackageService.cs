@@ -10,6 +10,7 @@ namespace LibraryServices.PackageService.Services
     public interface IPackageService : IServiceBase<Package>
     {
         Task<Package> GetPackageDetailByIdAsync(string id);
+
         Task<PageData<Package>> GetPackagePageAsync(Expression<Func<Package, bool>>? whereExpression, int pageIndex = 1, int pageSize = 20, string? orderBy = null);
     }
 

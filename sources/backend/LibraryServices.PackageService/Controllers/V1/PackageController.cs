@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace LibraryServices.PackageService.Controllers.V1
 {
@@ -37,8 +35,8 @@ namespace LibraryServices.PackageService.Controllers.V1
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<MessageData<PageData<PackageVersionDTO>>> GetVersionAsync([FromRoute] string id,
-    [FromServices] IVersionService versionService, [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 20)
+        public async Task<MessageData<PageData<PackageVersionDTO>>> GetVersionAsync([FromRoute] string id, [FromServices] IVersionService versionService,
+            [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 20)
         {
             _logger.LogInformation("query package versions by id {id}", id);
             var redisKey = $"package/versions/{id}?pageIndex={pageIndex}&pageSize={pageSize}";
@@ -70,8 +68,8 @@ namespace LibraryServices.PackageService.Controllers.V1
         [AllowAnonymous]
         public async Task<MessageData<PageData<PackageDTO>>> GetPackagesByPage(string? keyword = null, int pageIndex = 1, int pageSize = 30, string? orderBy = null)
         {
-            _logger.LogInformation("query packages by keyword: {keyword} pageIndex: {pageIndex} pageSize: {pageSize}", keyword, pageIndex, pageSize);
-            var redisKey = $"packages?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}";
+            _logger.LogInformation("query packages by keyword: {keyword} pageIndex: {pageIndex} pageSize: {pageSize} orderBy: {orderBy}", keyword, pageIndex, pageSize, orderBy);
+            var redisKey = $"packages?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}&orderBy={orderBy}";
             var packagesPage = default(PageData<Package>);
             if (await _redis.Exist(redisKey))
             {
@@ -89,7 +87,7 @@ namespace LibraryServices.PackageService.Controllers.V1
         [HttpPost]
         [Authorize(Roles = PermissionConstants.ADMINISTATOR)]
         public async Task<MessageData<string>> UpdateAsync([FromServices] IHttpClientFactory clientFactory,
-      [FromServices] DatabaseContext appDbContext, [FromServices] IUnitOfWork unitOfWork)
+        [FromServices] DatabaseContext appDbContext, [FromServices] IUnitOfWork unitOfWork)
         {
             var httpClient = clientFactory.CreateClient();
             var responseMessage = await httpClient.GetAsync("https://dynamopackages.com/packages");
