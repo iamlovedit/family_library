@@ -42,7 +42,7 @@ namespace LibraryServices.Infrastructure.Consul
                 option.ID = Guid.NewGuid().ToString();
                 option.Name = consulOption.Name;
                 option.Address = consulOption.Address;
-                option.Port = configuration["LISTENING_PORT"]?.ObjToInt()??throw new ArgumentNullException("listening port is null");
+                option.Port = configuration[$"ASPNETCORE_HTTP_PORTS"]?.ObjToInt()??throw new ArgumentNullException("listening port is null");
             });
         }
     }

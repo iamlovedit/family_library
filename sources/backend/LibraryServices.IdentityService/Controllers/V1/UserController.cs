@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using SqlSugar.Extensions;
+using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace LibraryServices.IdentityService.Controllers.V1
 {
@@ -134,6 +136,7 @@ namespace LibraryServices.IdentityService.Controllers.V1
                     new(JwtRegisteredClaimNames.Jti, user.Id.ObjToString()),
                     new(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_tokenBuilder.GetTokenExpirationSeconds()).ToString()),
+                    new(JwtRegisteredClaimNames.Iat,  EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
                     new(ClaimTypes.Role, role.Name!)
                 };
 
