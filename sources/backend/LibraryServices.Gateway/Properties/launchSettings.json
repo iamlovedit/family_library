@@ -5,7 +5,10 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if"
+        "ASPNETCORE_HTTP_PORTS": "5000",
+        "AUDIENCE_KEY": "a7a31f84-1051-81bc-b930-89c0ae9e92if",
+        "SEQ_URL": "http://localhost:5341",
+        "SEQ_APIKEY": "tZSCDVnAbyYZB1s4twSl"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5000"
@@ -14,7 +17,7 @@
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://+:80"
+        "ASPNETCORE_HTTP_PORTS": "80"
       },
       "publishAllPorts": true
     }
