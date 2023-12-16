@@ -18,10 +18,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddInfrastructureSetup(this WebApplicationBuilder builder)
         {
-            if (builder is null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
+            ArgumentNullException.ThrowIfNull(builder);
             var services = builder.Services;
             var configuration = builder.Configuration;
 

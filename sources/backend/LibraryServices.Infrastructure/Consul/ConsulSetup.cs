@@ -11,15 +11,9 @@ namespace LibraryServices.Infrastructure.Consul
     {
         public static void AddConsulSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
             var consulOption = configuration.GetSection("Consul").Get<ConsulOption>();
 

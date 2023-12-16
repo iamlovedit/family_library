@@ -11,14 +11,8 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddSerilogSetup(this WebApplicationBuilder builder, IConfiguration configuration)
         {
-            if (builder is null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(builder);
+            ArgumentNullException.ThrowIfNull(configuration);
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()

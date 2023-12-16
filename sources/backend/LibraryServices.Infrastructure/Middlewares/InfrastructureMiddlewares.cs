@@ -14,10 +14,7 @@ namespace LibraryServices.Infrastructure.Middlewares
     {
         public static void UseInfrastructure(this WebApplication app)
         {
-            if (app is null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
 
             if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
             {
@@ -55,10 +52,7 @@ namespace LibraryServices.Infrastructure.Middlewares
 
         public static void UseSerilogLogging(this WebApplication app)
         {
-            if (app is null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
             app.UseSerilogRequestLogging(options =>
             {
                 // Customize the message template
@@ -80,14 +74,8 @@ namespace LibraryServices.Infrastructure.Middlewares
 
         public static void UseInitSeed(this IApplicationBuilder app, Action<DatabaseSeed> seedBuilder)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-            if (seedBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(seedBuilder));
-            }
+            ArgumentNullException.ThrowIfNull(app);
+            ArgumentNullException.ThrowIfNull(seedBuilder);
             using var scope = app.ApplicationServices.CreateScope();
             var databaseSeed = scope.ServiceProvider.GetRequiredService<DatabaseSeed>();
             if (databaseSeed == null)

@@ -7,10 +7,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddApiVersionSetup(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
             services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);

@@ -13,20 +13,11 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddSqlsugarSetup(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
-            if (hostEnvironment is null)
-            {
-                throw new ArgumentNullException(nameof(hostEnvironment));
-            }
+            ArgumentNullException.ThrowIfNull(hostEnvironment);
 
             SnowFlakeSingle.WorkId = configuration["SNOWFLAKES_WORKID"]?.ObjToInt() ?? throw new ArgumentNullException("Snowflakes workid is null");
             var connectionString =

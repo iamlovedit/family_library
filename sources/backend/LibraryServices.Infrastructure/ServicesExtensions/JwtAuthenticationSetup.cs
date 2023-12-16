@@ -15,15 +15,9 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddJwtAuthenticationSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
             var section = configuration.GetSection("Audience");
             var buffer = Encoding.UTF8.GetBytes(configuration["AUDIENCE_KEY"]!);

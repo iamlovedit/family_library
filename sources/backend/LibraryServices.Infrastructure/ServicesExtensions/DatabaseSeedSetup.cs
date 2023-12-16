@@ -7,10 +7,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddDatabaseSeedSetup(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             services.AddScoped<DatabaseContext>();
             services.AddScoped<DatabaseSeed>();

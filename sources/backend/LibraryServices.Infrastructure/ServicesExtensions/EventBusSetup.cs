@@ -11,10 +11,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddEventBusSetup(this IServiceCollection services)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
