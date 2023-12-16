@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace LibraryServices.Infrastructure.ServicesExtensions
 {
@@ -27,6 +28,8 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             services.AddHealthChecks();
             services.AddConsulSetup(configuration);
             services.AddSingleton<SecurityTokenValidator>();
+            services.AddSingleton<JwtSecurityTokenHandler>();
+            services.AddSingleton<GalaTokenHandler>();
             services.AddSingleton<IAESEncryptionService, AESEncryptionService>();
             services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, JwtBearerOptionsPostConfigureOptions>();
             services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));

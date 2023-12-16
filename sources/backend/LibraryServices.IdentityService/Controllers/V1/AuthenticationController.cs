@@ -62,7 +62,7 @@ namespace LibraryServices.Identity.Controllers.V1
                 {
                     new(ClaimTypes.Name, user.Username!),
                     new(JwtRegisteredClaimNames.Jti, user.Id.ObjToString()),
-                    new(JwtRegisteredClaimNames.Iat,  EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
+                    new(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
                     new(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_tokenBuilder.GetTokenExpirationSeconds()).ToString())
                 };
