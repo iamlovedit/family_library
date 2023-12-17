@@ -3,8 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: ["preproduction"]
-  pull_request:
-    branches: ["main"]
 
 jobs:
   docker:
@@ -20,7 +18,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2.3.4
       - name: Build and push image
-        working-directory: ./sources/backend
+        working-directory: ./src/backend
         env:
           USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
