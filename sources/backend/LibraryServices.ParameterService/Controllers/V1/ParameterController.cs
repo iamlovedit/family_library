@@ -6,7 +6,7 @@ namespace LibraryServices.ParameterService.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("parameter/v{version:apiVersion}")]
-    public class ParameterController : ApiControllerBase
+    public class ParameterController : GalaApiControllerBase
     {
         public ParameterController()
         {

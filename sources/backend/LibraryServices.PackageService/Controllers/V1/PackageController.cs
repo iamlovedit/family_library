@@ -17,7 +17,7 @@ namespace LibraryServices.PackageService.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("package/v{version:apiVersion}")]
-    public class PackageController : ApiControllerBase
+    public class PackageController : GalaApiControllerBase
     {
         private readonly IPackageService _packageService;
         private readonly ILogger<PackageController> _logger;

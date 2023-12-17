@@ -41,9 +41,9 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
             services.AddAuthentication(options =>
              {
                  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                 options.DefaultChallengeScheme = nameof(ApiAuthenticationHandler);
-                 options.DefaultForbidScheme = nameof(ApiAuthenticationHandler);
-             }).AddScheme<AuthenticationSchemeOptions, ApiAuthenticationHandler>(nameof(ApiAuthenticationHandler),
+                 options.DefaultChallengeScheme = nameof(GalaAuthenticationHandler);
+                 options.DefaultForbidScheme = nameof(GalaAuthenticationHandler);
+             }).AddScheme<AuthenticationSchemeOptions, GalaAuthenticationHandler>(nameof(GalaAuthenticationHandler),
                  options => { }).AddJwtBearer(options =>
                  {
                      options.TokenValidationParameters = tokenValidationParameters;

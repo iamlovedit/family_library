@@ -15,7 +15,7 @@ namespace LibraryServices.FamilyService.Controllers.V1
 {
     [Route("family/v{version:apiVersion}")]
     [ApiVersion("1.0")]
-    public class FamilyController : ApiControllerBase
+    public class FamilyController : GalaApiControllerBase
     {
         private readonly IMinioClient _minioClient;
         private readonly ILogger<FamilyController> _logger;

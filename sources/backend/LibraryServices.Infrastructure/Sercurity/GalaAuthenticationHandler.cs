@@ -7,10 +7,10 @@ using System.Text.Encodings.Web;
 
 namespace LibraryServices.Infrastructure.Sercurity
 {
-    public class ApiAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class GalaAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public ApiAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
-            UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        public GalaAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
+            UrlEncoder encoder) : base(options, logger, encoder)
         {
         }
 
@@ -23,7 +23,7 @@ namespace LibraryServices.Infrastructure.Sercurity
         {
             Response.ContentType = "application/json";
             Response.StatusCode = StatusCodes.Status401Unauthorized;
-            var message = JsonConvert.SerializeObject(new ApiResponse(StatusCode.Code401).Message);
+            var message = JsonConvert.SerializeObject(new GalaApiResponse(StatusCode.Code401).Message);
             await Response.WriteAsync(message);
         }
 
@@ -31,7 +31,7 @@ namespace LibraryServices.Infrastructure.Sercurity
         {
             Response.ContentType = "application/json";
             Response.StatusCode = StatusCodes.Status403Forbidden;
-            var message = JsonConvert.SerializeObject(new ApiResponse(StatusCode.Code403).Message);
+            var message = JsonConvert.SerializeObject(new GalaApiResponse(StatusCode.Code403).Message);
             await Response.WriteAsync(message);
         }
     }

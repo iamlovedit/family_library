@@ -1,6 +1,6 @@
 ﻿namespace LibraryServices.Infrastructure.Sercurity
 {
-    internal class ApiResponse
+    internal class GalaApiResponse
     {
         public int Code { get; }
 
@@ -8,7 +8,7 @@
 
         public MessageData<string> Message { get; }
 
-        public ApiResponse(StatusCode code, string message = null)
+        public GalaApiResponse(StatusCode code, string message = null)
         {
             switch (code)
             {
