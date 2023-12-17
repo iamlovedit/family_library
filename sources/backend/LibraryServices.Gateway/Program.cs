@@ -5,6 +5,7 @@ using Ocelot.Provider.Polly;
 using Ocelot.Provider.Consul;
 using LibraryServices.Infrastructure.Consul;
 using LibraryServices.Infrastructure.Middlewares;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 const string _corsName = "cors";
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -13,6 +14,10 @@ builder.AddSerilogSetup(builder.Configuration);
 services.AddHealthChecks();
 services.AddConsulSetup(builder.Configuration);
 
+services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = long.MaxValue;
+});
 services.AddCors(option =>
 {
     option.AddPolicy(_corsName, policy =>

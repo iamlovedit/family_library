@@ -11,20 +11,14 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddSerilogSetup(this WebApplicationBuilder builder, IConfiguration configuration)
         {
-            if (builder is null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(builder);
+            ArgumentNullException.ThrowIfNull(configuration);
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .Filter.ByExcluding("RequestPath like '/health'")
-                .Filter.ByExcluding("StartsWith(@m,'requestId: no request id, previousRequestId: no previous request id, message: Started polling')")
-                .Filter.ByExcluding("StartsWith(@m,'requestId: no request id, previousRequestId: no previous request id, message: Finished polling')")
+                .Filter.ByExcluding("StartsWith(@m,'requestId: No RequestId, previousRequestId: No PreviousRequestId, message: ')")
+                .Filter.ByExcluding("StartsWith(@m,'requestId: No RequestId, previousRequestId: No PreviousRequestId, message: ')")
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .WriteTo.Console()
                 .WriteTo.File(Path.Combine("logs", "log"), rollingInterval: RollingInterval.Hour)

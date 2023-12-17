@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace LibraryServices.PackageService.Controllers.V1
 {
@@ -37,8 +35,8 @@ namespace LibraryServices.PackageService.Controllers.V1
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<MessageData<PageData<PackageVersionDTO>>> GetVersionAsync([FromRoute] string id,
-    [FromServices] IVersionService versionService, [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 20)
+        public async Task<MessageData<PageData<PackageVersionDTO>>> GetVersionAsync([FromRoute] string id, [FromServices] IVersionService versionService,
+            [FromQuery] int pageIndex = 1, [FromQuery] int pageSize = 20)
         {
             _logger.LogInformation("query package versions by id {id}", id);
             var redisKey = $"package/versions/{id}?pageIndex={pageIndex}&pageSize={pageSize}";
@@ -70,8 +68,8 @@ namespace LibraryServices.PackageService.Controllers.V1
         [AllowAnonymous]
         public async Task<MessageData<PageData<PackageDTO>>> GetPackagesByPage(string? keyword = null, int pageIndex = 1, int pageSize = 30, string? orderBy = null)
         {
-            _logger.LogInformation("query packages by keyword: {keyword} pageIndex: {pageIndex} pageSize: {pageSize}", keyword, pageIndex, pageSize);
-            var redisKey = $"packages?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}";
+            _logger.LogInformation("query packages by keyword: {keyword} pageIndex: {pageIndex} pageSize: {pageSize} orderBy: {orderBy}", keyword, pageIndex, pageSize, orderBy);
+            var redisKey = $"packages?keyword={keyword}&pageIndex={pageIndex}&pageSize={pageSize}&orderBy={orderBy}";
             var packagesPage = default(PageData<Package>);
             if (await _redis.Exist(redisKey))
             {
@@ -87,9 +85,9 @@ namespace LibraryServices.PackageService.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize(Roles = PermissionConstants.SUPERADMINISTATOR)]
+        [Authorize(Roles = PermissionConstants.ADMINISTATOR)]
         public async Task<MessageData<string>> UpdateAsync([FromServices] IHttpClientFactory clientFactory,
-      [FromServices] DatabaseContext appDbContext, [FromServices] IUnitOfWork unitOfWork)
+        [FromServices] DatabaseContext appDbContext, [FromServices] IUnitOfWork unitOfWork)
         {
             var httpClient = clientFactory.CreateClient();
             var responseMessage = await httpClient.GetAsync("https://dynamopackages.com/packages");
@@ -185,6 +183,89 @@ namespace LibraryServices.PackageService.Controllers.V1
                 }
             }
             return Failed($"request failed,http status code {responseMessage.StatusCode}");
+        }
+
+        [HttpPost("update")]
+        [DisableRequestSizeLimit]
+        [RequestSizeLimit(int.MaxValue)]
+        [Authorize(Roles = PermissionConstants.ADMINISTATOR)]
+        public async Task<MessageData<string>> UpdateByPackagesAsync([FromServices] IUnitOfWork unitOfWork, [FromServices] DatabaseContext appDbContext, [FromBody] List<Package> packages)
+        {
+            try
+            {
+                var packageDb = appDbContext.GetEntityDB<Package>();
+                var packageVersionDb = appDbContext.GetEntityDB<PackageVersion>();
+                var oldPackages = await packageDb.GetListAsync();
+                var oldPackageVersions = await packageVersionDb.GetListAsync();
+                unitOfWork.BeginTransaction();
+                var addedPackages = new List<Package>();
+                var addedPackageVersions = new List<PackageVersion>();
+                var newPackageVersions = new List<PackageVersion>();
+                foreach (var package in packages)
+                {
+                    var oldPackage = oldPackages.FirstOrDefault(p => p.Id == package.Id);
+                    if (oldPackage is null)
+                    {
+                        addedPackages.Add(package);
+                    }
+                    else
+                    {
+                        await packageDb.UpdateAsync(package);
+                    }
+
+                    foreach (var pVersion in package.Versions)
+                    {
+                        pVersion.PackageId = package.Id;
+                        var oldPackageVersion = oldPackageVersions.FirstOrDefault(pv =>
+                            pv.PackageId == package.Id && pv.Version == pVersion.Version);
+                        if (oldPackageVersion is null)
+                        {
+                            addedPackageVersions.Add(pVersion);
+                        }
+                        else
+                        {
+                            await packageVersionDb.UpdateAsync(pVersion);
+                        }
+
+                        newPackageVersions.Add(pVersion);
+                    }
+                }
+
+                await packageDb.InsertRangeAsync(addedPackages);
+                await packageVersionDb.InsertRangeAsync(addedPackageVersions);
+
+                foreach (var package in oldPackages)
+                {
+                    var newPackage = packages.FirstOrDefault(p => p.Id == package.Id);
+                    if (newPackage is null)
+                    {
+                        package.IsDeleted = true;
+                        await packageDb.UpdateAsync(package);
+                    }
+                }
+
+                foreach (var pVersion in oldPackageVersions)
+                {
+                    var newVersion = newPackageVersions.FirstOrDefault(pv =>
+                        pv.PackageId == pVersion.PackageId && pv.Version == pVersion.Version);
+                    if (newVersion is null)
+                    {
+                        pVersion.IsDeleted = true;
+                        await packageVersionDb.UpdateAsync(pVersion);
+                    }
+                }
+
+                _logger.LogInformation("added new package count {added},added new version count {addedverson}",
+                    addedPackages.Count, addedPackageVersions.Count);
+                unitOfWork.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                unitOfWork.RollbackTransaction();
+                _logger.LogError(e, e.Message);
+                return Failed(e.Message);
+            }
+            return Success("更新完成");
         }
     }
 }

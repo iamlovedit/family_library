@@ -3,11 +3,16 @@ using LibraryServices.Infrastructure.Middlewares;
 using LibraryServices.Infrastructure.ServicesExtensions;
 using LibraryServices.PackageService.Jobs;
 using LibraryServices.PackageService.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Quartz;
 using Quartz.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = long.MaxValue;
+});
 
 services.AddScoped<IPackageService, PackageService>();
 services.AddScoped<IVersionService, VersionService>();

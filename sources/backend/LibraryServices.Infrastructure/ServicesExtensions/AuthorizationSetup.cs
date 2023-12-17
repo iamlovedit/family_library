@@ -12,15 +12,9 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddAuthorizationSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
             var audienceSection = configuration.GetSection("Audience");
             var keyByteArray = Encoding.ASCII.GetBytes(configuration["AUDIENCE_KEY"]!);

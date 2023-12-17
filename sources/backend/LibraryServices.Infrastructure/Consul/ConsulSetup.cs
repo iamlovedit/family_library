@@ -11,15 +11,9 @@ namespace LibraryServices.Infrastructure.Consul
     {
         public static void AddConsulSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            ArgumentNullException.ThrowIfNull(configuration);
 
             var consulOption = configuration.GetSection("Consul").Get<ConsulOption>();
 
@@ -42,7 +36,7 @@ namespace LibraryServices.Infrastructure.Consul
                 option.ID = Guid.NewGuid().ToString();
                 option.Name = consulOption.Name;
                 option.Address = consulOption.Address;
-                option.Port = configuration["LISTENING_PORT"]?.ObjToInt()??throw new ArgumentNullException("listening port is null");
+                option.Port = configuration[$"ASPNETCORE_HTTP_PORTS"]?.ObjToInt()??throw new ArgumentNullException("listening port is null");
             });
         }
     }

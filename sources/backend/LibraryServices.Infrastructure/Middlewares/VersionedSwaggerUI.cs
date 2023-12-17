@@ -8,10 +8,7 @@ namespace LibraryServices.Infrastructure.Middlewares
     {
         public static void UseVersionedSwaggerUI(this IApplicationBuilder app)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
             var apiVersionDescriptionProvider = app.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
             app.UseSwaggerUI(builder =>
             {

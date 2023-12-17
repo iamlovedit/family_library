@@ -18,7 +18,7 @@
         "MINIO_HOST": "files.youngala.com",
         "MINIO_ROOT_USER": "test",
         "MINIO_ROOT_PASSWORD": "test@12315",
-        "LISTENING_PORT": "7000",
+        "ASPNETCORE_HTTP_PORTS": "7000",
         "SNOWFLAKES_WORKID": "1",
         "SEQ_URL": "http://localhost:5341",
         "SEQ_APIKEY": "yeEZyL3SMcxEKUijBjN"
@@ -31,7 +31,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://+:80"
+        "ASPNETCORE_HTTP_PORTS": "80"
       },
       "publishAllPorts": true
     }

@@ -7,7 +7,9 @@ using LibraryServices.Infrastructure.Sercurity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using SqlSugar.Extensions;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace LibraryServices.Identity.Controllers.V1
@@ -60,6 +62,7 @@ namespace LibraryServices.Identity.Controllers.V1
                 {
                     new(ClaimTypes.Name, user.Username!),
                     new(JwtRegisteredClaimNames.Jti, user.Id.ObjToString()),
+                    new(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
                     new(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_tokenBuilder.GetTokenExpirationSeconds()).ToString())
                 };
@@ -96,6 +99,7 @@ namespace LibraryServices.Identity.Controllers.V1
                     {
                         new(ClaimTypes.Name, user.Username!),
                         new(JwtRegisteredClaimNames.Jti, user.Id.ObjToString()),
+                        new(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
                         new(ClaimTypes.Expiration,
                             DateTime.Now.AddSeconds(_tokenBuilder.GetTokenExpirationSeconds()).ToString())
                     };

@@ -9,10 +9,7 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
     {
         public static void AddRedisCacheSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             services.AddScoped<IRedisBasketRepository, RedisBasketRepository>();
             services.AddSingleton(provider => new RedisRequirement(TimeSpan.FromMinutes(30)));
