@@ -11,7 +11,7 @@ namespace LibraryServices.Infrastructure
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [Authorize(Policy = PermissionConstants.POLICY_NAME)]
-    public class ApiControllerBase : ControllerBase
+    public class GalaApiControllerBase : ControllerBase
     {
         [NonAction]
         [ApiExplorerSettings(IgnoreApi = true)]

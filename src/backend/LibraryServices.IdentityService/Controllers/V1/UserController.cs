@@ -19,7 +19,7 @@ namespace LibraryServices.IdentityService.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("identity/v{version:apiVersion}/user")]
-    public class UserController : ApiControllerBase
+    public class UserController : GalaApiControllerBase
     {
         private readonly ITokenBuilder _tokenBuilder;
         private readonly ILogger<UserController> _logger;

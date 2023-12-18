@@ -16,7 +16,7 @@ namespace LibraryServices.Identity.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("identity/v{version:apiVersion}/auth")]
-    public class AuthenticationController : ApiControllerBase
+    public class AuthenticationController : GalaApiControllerBase
     {
         private readonly ITokenBuilder _tokenBuilder;
         private readonly IUserService _userService;
