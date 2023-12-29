@@ -56,7 +56,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { t } from '@/locales'
 import { usePackageStore } from '@stores/modules/package'
 import type { Package } from '@/stores/modules/package/helper'
-import { packages } from './mock'
 import { PublishedWithChangesFilled, UpdateFilled, DownloadFilled, ThumbUpFilled } from '@vicons/material'
 
 const packageStore = usePackageStore()
@@ -69,6 +68,8 @@ const orderValue = ref(orderBy || 'default')
 const loading = ref<boolean>(false)
 const page = ref<number>();
 const pageCount = ref<number>();
+const packages = ref<Package[]>([]);
+
 
 const orders = [
     {
@@ -123,8 +124,15 @@ function handleUpdatePage(value: number) {
 }
 
 async function getPackageList(pageIndex: number, pageSize: number) {
-    const response = await packageStore.getPackages(pageIndex, pageSize)
-    console.log(response)
+    const { data } = await packageStore.getPackages(pageIndex, pageSize)
+    if (data.succeed) {
+        packages.value = data.response.data
+        page.value = data.response.page
+        pageCount.value = data.response.pageCount
+    }
+    else {
+        console.error(data.message)
+    }
 }
 
 onMounted(async () => {
