@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from 'vue'
 import { TokenInfo, getTokenInfo, setTokenInfo, removeTokenInfo } from "./helper";
+
+
 export const useAuthStore = defineStore("auth", () => {
     const tokenState = ref<TokenInfo>(getTokenInfo())
     function updateToken(tokenInfo: TokenInfo) {
@@ -14,6 +16,7 @@ export const useAuthStore = defineStore("auth", () => {
     function saveState() {
         setTokenInfo(tokenState.value)
     }
+
     return {
         tokenState,
         updateToken,
