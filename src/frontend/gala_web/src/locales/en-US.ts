@@ -30,7 +30,7 @@ export default {
     },
     error: {
         404: {
-            title: '资源不存在',
+            title: 'not found',
         }
     },
     login: {
@@ -40,5 +40,6 @@ export default {
         password_placeholder: 'Enter password',
         remeber: 'Remeber me',
         logining: 'Logining...',
+        register: 'Register',
     }
 }
