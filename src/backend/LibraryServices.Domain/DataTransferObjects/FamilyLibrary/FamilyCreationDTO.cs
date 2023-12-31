@@ -9,5 +9,7 @@
         public string? Description { get; set; }
 
         public ushort Version { get; set; }
+
+        public long CategoryId { get; set; }
     }
 }
