@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
+import { useAuthStore } from "@/stores/modules/auth";
 
 export type HttpResponse<T> = {
     statusCode: number;
@@ -10,6 +11,7 @@ export type HttpResponse<T> = {
 }
 
 const router = useRouter();
+const authStore = useAuthStore();
 const message = useMessage();
 
 const service = axios.create({
@@ -23,6 +25,8 @@ const service = axios.create({
 
 service.interceptors.request.use(
     config => {
+        const token = authStore.tokenState.token;
+        token && (config.headers.Authorization = `Bearer ${token}`);
         if (config.method == 'post') {
             config.data = JSON.stringify(config.data)
         }

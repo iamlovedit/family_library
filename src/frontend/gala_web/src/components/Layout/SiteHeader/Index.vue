@@ -3,9 +3,10 @@
         <n-page-header>
             <template #title>
                 <n-space :algin="'center'">
-                    <div>
-                        <a href="/" style="text-decoration: none; color: inherit" class="inline-block">
-                            gala
+                    <div class="flex justify-center items-center h-full">
+                        <a href="/" style="text-decoration: none; color: inherit"
+                            class="flex content-center justify-center">
+                            youngala
                         </a>
                     </div>
                     <n-menu :options="menuOptions" mode="horizontal" @update:value="handleUpdateValue"

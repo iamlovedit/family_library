@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+  overflow: auto;
   --header-height: 52px;
   --footer-height: 40px;
 }

@@ -72,6 +72,10 @@ namespace LibraryServices.Domain.Models.FamilyLibrary
         {
             return Path.Combine("images", $"{FileId}.png");
         }
+        public string GetGltfPath()
+        {
+            return Path.Combine("gltfs", $"{FileId}.gltf");
+        }
     }
 }
 
