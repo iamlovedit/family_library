@@ -71,7 +71,12 @@ const formValue = ref({
 
 function handleRegisterClick(e: MouseEvent) {
     e.preventDefault()
-    router.push('/register')
+    router.push({
+        name: 'register',
+        query: {
+            redirect: route.query.redirect
+        }
+    })
 }
 
 function handleLoginClick(e: MouseEvent) {
@@ -82,23 +87,28 @@ function handleLoginClick(e: MouseEvent) {
             loading.value = true;
         }
     }).then(async () => {
-        const res = await login(formValue.value);
-        if (res) {
-            const httpResponse = res.data;
-            if (httpResponse.succeed) {
-                authStore.updateToken(httpResponse.response)
-                if (route.query.redirect) {
-                    router.push(route.query.redirect as string)
-                } else {
-                    router.push('/')
+        try {
+            const res = await login(formValue.value);
+            if (res) {
+                const httpResponse = res.data;
+                if (httpResponse.succeed) {
+                    authStore.updateToken(httpResponse.response)
+                    if (route.query.redirect) {
+                        router.push(route.query.redirect as string)
+                    } else {
+                        router.push('/')
+                    }
+                }
+                else {
+                    message.error(t('error.password'));
                 }
             }
-            else {
-                message.error(httpResponse.message);
-            }
+        } catch (error: any) {
+            message.error(t('error.server'));
+        } finally {
+            loading.value = false;
+            messageReactive.destroy();
         }
-    }).finally(() => {
-        messageReactive.destroy();
     })
 }
 </script>

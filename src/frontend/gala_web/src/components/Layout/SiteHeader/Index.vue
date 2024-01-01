@@ -18,6 +18,13 @@
             </template>
             <template #extra>
                 <n-space :algin="'center'">
+                    <n-button v-if="!authStore.tokenState" quaternary type="info" :bordered="false"
+                        @click="handleLoginClick">
+                        {{ t('header.login') }}
+                    </n-button>
+                    <n-dropdown v-else placement="bottom-start" :options="consoleOptions">
+                        <n-avatar size="small" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
+                    </n-dropdown>
                     <n-button circle @click="switchTheme">
                         <n-icon :component="themeIcon" />
                     </n-button>
@@ -33,26 +40,25 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuOption } from 'naive-ui';
+import type { MenuOption, DropdownOption } from 'naive-ui';
 import { h, Component, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { NIcon } from 'naive-ui'
 import SiteIcon from '@components/icons/SiteIcon.vue'
 import {
-    BookOutline as BookIcon,
-    HomeOutline as HomeIcon,
-    FileTrayFullSharp as FileIcon,
     Language as LanguageIcon
 } from '@vicons/ionicons5'
 import { DarkModeRound, LightModeRound } from '@vicons/material';
 import { useAppStore } from '@/stores/modules/app';
 import { t } from '@/locales'
-
+import { useAuthStore } from '@/stores/modules/auth';
 
 
 function renderIcon(icon: Component) {
     return () => h(NIcon, null, { default: () => h(icon) })
 }
+
+const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
@@ -76,7 +82,7 @@ const menuOptions: MenuOption[] = [
 ]
 
 
-const languageOptions = [
+const languageOptions: DropdownOption[] = [
     {
         label: 'English',
         key: 'en-US',
@@ -97,6 +103,18 @@ const languageOptions = [
     }
 ];
 
+const consoleOptions: DropdownOption[] = [
+    {
+        label: t('header.logout'),
+        key: 'logout',
+        props: {
+            onClick: () => {
+                authStore.clearToken();
+            }
+        }
+    }
+]
+
 const themeIcon = computed(() => {
     return appStore.appState.theme == 'dark' ? DarkModeRound : LightModeRound;
 });
@@ -110,5 +128,13 @@ function handleUpdateValue(key: string) {
 function switchTheme() {
     appStore.switchTheme();
 }
+
+function handleLoginClick() {
+    if (route.name == 'login') return
+    router.push({
+        name: 'login'
+    })
+}
+
 
 </script>
