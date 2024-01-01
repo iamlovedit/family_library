@@ -31,7 +31,10 @@ export default {
     error: {
         404: {
             title: 'not found',
-        }
+        },
+        network: 'Network Error',
+        server: 'Server Error',
+        password: 'Username or password error',
     },
     login: {
         username: 'Username',
