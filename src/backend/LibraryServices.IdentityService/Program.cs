@@ -1,13 +1,16 @@
+using FluentValidation;
 using LibraryServices.Domain.Models.Identity;
 using LibraryServices.IdentityService.Services;
 using LibraryServices.Infrastructure.Middlewares;
 using LibraryServices.Infrastructure.ServicesExtensions;
+using LibraryServices.Infrastructure.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 services.AddScoped<IUserService, UserService>();
 services.AddScoped<IRoleService, RoleService>();
 services.AddScoped<IUserRoleService, UserRoleService>();
+services.AddScoped<IValidator<User>, UserValidator>();
 
 builder.AddInfrastructureSetup();
 

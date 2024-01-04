@@ -1,13 +1,17 @@
+using FluentValidation;
 using LibraryServices.Domain.Models.FamilyLibrary;
 using LibraryServices.FamilyService.Services;
 using LibraryServices.Infrastructure.Middlewares;
 using LibraryServices.Infrastructure.ServicesExtensions;
+using LibraryServices.Infrastructure.Validators;
 using Minio;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
-var configuration= builder.Configuration;
+var configuration = builder.Configuration;
 services.AddScoped<IFamilyService, FamilyService>();
+services.AddScoped<IValidator<Family>, FamilyValidator>();
+
 builder.AddInfrastructureSetup();
 
 services.AddMinio(client =>
