@@ -27,10 +27,9 @@ services.AddCors(option =>
 });
 
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("ocelot.json")
-    .AddJsonFile($"ocelot.{builder.Environment.ContentRootPath}.json", false, false)
+    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", false, false)
     .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{builder.Environment.ContentRootPath}.json", true, false)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, false)
     .AddEnvironmentVariables();
 
 var app = builder.Build();
