@@ -24,10 +24,10 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
                 .WriteTo.File(Path.Combine("logs", "log"), rollingInterval: RollingInterval.Hour)
                 .WriteTo.Seq(configuration["SEQ_URL"]!, apiKey: configuration["SEQ_APIKEY"])
                 .CreateLogger();
-            builder.Services.AddLogging(builder =>
+            builder.Services.AddLogging(logBuilder =>
             {
-                builder.ClearProviders();
-                builder.AddSerilog(Log.Logger);
+                logBuilder.ClearProviders();
+                logBuilder.AddSerilog(Log.Logger);
             });
 
             builder.Host.UseSerilog(Log.Logger, true);
