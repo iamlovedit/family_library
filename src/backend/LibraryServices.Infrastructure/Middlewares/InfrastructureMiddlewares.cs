@@ -2,12 +2,11 @@
 using LibraryServices.Infrastructure.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
-using Serilog.Events;
-
 namespace LibraryServices.Infrastructure.Middlewares
 {
     public static class InfrastructureMiddlewares
@@ -15,6 +14,11 @@ namespace LibraryServices.Infrastructure.Middlewares
         public static void UseInfrastructure(this WebApplication app)
         {
             ArgumentNullException.ThrowIfNull(app);
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
             {
