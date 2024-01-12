@@ -1,4 +1,5 @@
 using FluentValidation;
+using LibraryServices.Domain.DataTransferObjects.Identity;
 using LibraryServices.Domain.Models.Identity;
 using LibraryServices.IdentityService.Services;
 using LibraryServices.Infrastructure.Middlewares;
@@ -10,7 +11,7 @@ var services = builder.Services;
 services.AddScoped<IUserService, UserService>();
 services.AddScoped<IRoleService, RoleService>();
 services.AddScoped<IUserRoleService, UserRoleService>();
-services.AddScoped<IValidator<User>, UserValidator>();
+services.AddScoped<IValidator<UserCreationDTO>, UserValidator>();
 
 builder.AddInfrastructureSetup();
 

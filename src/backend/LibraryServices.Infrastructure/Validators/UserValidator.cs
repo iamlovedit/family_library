@@ -1,9 +1,10 @@
 using FluentValidation;
+using LibraryServices.Domain.DataTransferObjects.Identity;
 using LibraryServices.Domain.Models.Identity;
 
 namespace LibraryServices.Infrastructure.Validators
 {
-    public class UserValidator : AbstractValidator<User>
+    public class UserValidator : AbstractValidator<UserCreationDTO>
     {
         public UserValidator()
         {

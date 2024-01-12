@@ -1,4 +1,5 @@
 using FluentValidation;
+using LibraryServices.Domain.DataTransferObjects.FamilyLibrary;
 using LibraryServices.Domain.Models.FamilyLibrary;
 using LibraryServices.FamilyService.Services;
 using LibraryServices.Infrastructure.Middlewares;
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 services.AddScoped<IFamilyService, FamilyService>();
-services.AddScoped<IValidator<Family>, FamilyValidator>();
+services.AddScoped<IValidator<FamilyCreationDTO>, FamilyValidator>();
 
 builder.AddInfrastructureSetup();
 

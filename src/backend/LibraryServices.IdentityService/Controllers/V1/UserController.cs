@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using SqlSugar.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
+using FluentValidation;
 
 namespace LibraryServices.IdentityService.Controllers.V1
 {
@@ -27,8 +28,9 @@ namespace LibraryServices.IdentityService.Controllers.V1
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<UserCreationDTO> _validator;
 
-        public UserController(ITokenBuilder tokenBuilder, ILogger<UserController> logger,
+        public UserController(ITokenBuilder tokenBuilder, ILogger<UserController> logger, IValidator<UserCreationDTO> validator,
             IRedisBasketRepository redis, IMapper mapper, IUserService userService, IUnitOfWork unitOfWork)
         {
             _tokenBuilder = tokenBuilder;
@@ -37,6 +39,7 @@ namespace LibraryServices.IdentityService.Controllers.V1
             _mapper = mapper;
             _userService = userService;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
         [HttpGet("exist")]
@@ -100,8 +103,13 @@ namespace LibraryServices.IdentityService.Controllers.V1
                 return Failed<TokenInfo>("invalid request", 400);
             }
 
-            await _redis.Set(redisKey, userCreationDTO, TimeSpan.FromSeconds(1));
+            await _redis.Set(redisKey, redisKey, TimeSpan.FromSeconds(1));
 
+            var validResult = await _validator.ValidateAsync(userCreationDTO);
+            if (!validResult.IsValid)
+            {
+                return Failed<TokenInfo>(string.Join(',', validResult.Errors.Select(e => e.ErrorMessage)));
+            }
             var user = await _userService.GetFirstByExpressionAsync(u => u.Username == userCreationDTO.Username);
             if (user != null)
             {
