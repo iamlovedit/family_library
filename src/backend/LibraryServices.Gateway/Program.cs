@@ -26,14 +26,12 @@ services.AddCors(option =>
     });
 });
 
-builder.WebHost.ConfigureAppConfiguration((builderContext, builder) =>
-{
-    builder.SetBasePath(builderContext.HostingEnvironment.ContentRootPath)
-        .AddJsonFile("appsettings.json", false, true)
-        .AddJsonFile($"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json", true, false)
-        .AddJsonFile($"ocelot.{builderContext.HostingEnvironment.EnvironmentName}.json", false, false)
-        .AddEnvironmentVariables();
-});
+builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", false, false)
+    .AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, false)
+    .AddEnvironmentVariables();
+
 var app = builder.Build();
 
 app.UseHealthChecks("/health");

@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
+using FluentValidation;
 using LibraryServices.Domain.DataTransferObjects.FamilyLibrary;
 using LibraryServices.Domain.Models.FamilyLibrary;
 using LibraryServices.FamilyService.Services;
@@ -23,12 +24,13 @@ namespace LibraryServices.FamilyService.Controllers.V1
         private readonly IMapper _mapper;
         private readonly IFamilyService _familyService;
         private readonly RedisRequirement _redisRequirement;
+        private readonly IValidator<FamilyCreationDTO> _validator;
         private static readonly string _bucketName = "family";
         private static readonly string _region = "ShangHai";
         private static readonly int _expiry = 60;
 
         public FamilyController(IMinioClient minioClient, ILogger<FamilyController> logger,
-            IRedisBasketRepository redis,
+            IRedisBasketRepository redis, IValidator<FamilyCreationDTO> validator,
             IMapper mapper, IFamilyService familyService, RedisRequirement redisRequirement)
         {
             _minioClient = minioClient.WithRegion(_region);
@@ -37,6 +39,7 @@ namespace LibraryServices.FamilyService.Controllers.V1
             _mapper = mapper;
             _familyService = familyService;
             _redisRequirement = redisRequirement;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -73,6 +76,12 @@ namespace LibraryServices.FamilyService.Controllers.V1
             if (await _redis.Exist(lockKey))
             {
                 return Failed<string>("invalid request");
+            }
+            await _redis.Set(lockKey, lockKey, TimeSpan.FromSeconds(1));
+            var validResult = await _validator.ValidateAsync(familyCreationDTO);
+            if (!validResult.IsValid)
+            {
+                return Failed(string.Join(',', validResult.Errors.Select(e => e.ErrorMessage)));
             }
             var family = _mapper.Map<Family>(familyCreationDTO);
             var args = new PresignedPutObjectArgs().WithBucket(_bucketName).WithObject(family.GetFilePath(familyCreationDTO.Version)).WithExpiry(_expiry);

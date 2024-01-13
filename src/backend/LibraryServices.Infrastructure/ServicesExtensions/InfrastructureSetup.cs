@@ -89,14 +89,15 @@ namespace LibraryServices.Infrastructure.ServicesExtensions
 
             services.AddSwaggerGen(options =>
             {
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                
+                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
                 {
                     In = ParameterLocation.Header,
                     Description = "Please enter a valid token",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
-                    Scheme = "Bearer"
+                    Scheme = JwtBearerDefaults.AuthenticationScheme
                 });
             });
         }

@@ -31,7 +31,10 @@ export default {
     error: {
         404: {
             title: '资源不存在',
-        }
+        },
+        network: '网络错误',
+        server: '服务器错误',
+        password: '用户名或者密码错误',
     },
     login: {
         username: '用户名',

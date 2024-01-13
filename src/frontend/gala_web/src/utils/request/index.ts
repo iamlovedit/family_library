@@ -88,8 +88,8 @@ service.interceptors.response.use(
                         duration: 1500
                     })
             }
-            return Promise.reject(error.response);
         }
+        return Promise.reject(error.response);
     }
 )
 
