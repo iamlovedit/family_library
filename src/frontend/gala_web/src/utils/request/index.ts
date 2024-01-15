@@ -25,28 +25,30 @@ const service = axios.create({
 
 service.interceptors.request.use(
     config => {
-        const token = authStore.tokenState.token;
-        token && (config.headers.Authorization = `Bearer ${token}`);
+        const token = authStore.tokenState?.token;
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
         if (config.method == 'post') {
             config.data = JSON.stringify(config.data)
         }
         return config;
     },
-    error => {
+    function (error) {
         message.error(error);
         return Promise.reject(error);
     }
 )
 
 service.interceptors.response.use(
-    response => {
+    function (response) {
         if (response.status === 200) {
             return Promise.resolve(response);
         } else {
             return Promise.reject(response);
         }
     },
-    error => {
+    function (error) {
         if (error.response.status) {
             switch (error.response.status) {
                 case 401:
