@@ -24,9 +24,10 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(
-    config => {
+    function (config) {
+        const requireAuth: boolean = (config.headers || {}).requireAuth || false;
         const token = authStore.tokenState?.token;
-        if (token) {
+        if (token && requireAuth) {
             config.headers.Authorization = `Bearer ${token}`
         }
         if (config.method == 'post') {
@@ -49,47 +50,48 @@ service.interceptors.response.use(
         }
     },
     function (error) {
-        if (error.response.status) {
-            switch (error.response.status) {
-                case 401:
+        const response = error.response;
+        const statusCode: number = response.status || 200;
+        const errorMessage: string = `${response.data?.error?.message}`
+        switch (statusCode) {
+            case 401:
+                router.replace({
+                    path: '/login',
+                    query: {
+                        redirect: router.currentRoute.value.fullPath
+                    }
+                });
+                break;
+            case 403:
+                message.info(errorMessage, {
+                    duration: 1000
+                })
+                setTimeout(() => {
                     router.replace({
-                        path: '/login',
+                        path: '/403',
                         query: {
                             redirect: router.currentRoute.value.fullPath
                         }
                     });
-                    break;
-                case 403:
-                    message.info("token expired", {
-                        duration: 1000
-                    })
-                    setTimeout(() => {
-                        router.replace({
-                            path: '/403',
-                            query: {
-                                redirect: router.currentRoute.value.fullPath
-                            }
-                        });
-                    }, 1000);
-                    break;
-                case 404:
-                    message.info("404", {
-                        duration: 1500
-                    })
-                    setTimeout(() => {
-                        router.replace({
-                            path: '/404',
-                            query: {
-                                redirect: router.currentRoute.value.fullPath
-                            }
-                        });
-                    }, 1500);
-                    break;
-                default:
-                    message.info(error.response.data.message, {
-                        duration: 1500
-                    })
-            }
+                }, 1000);
+                break;
+            case 404:
+                message.info(errorMessage, {
+                    duration: 1500
+                })
+                setTimeout(() => {
+                    router.replace({
+                        path: '/404',
+                        query: {
+                            redirect: router.currentRoute.value.fullPath
+                        }
+                    });
+                }, 1500);
+                break;
+            default:
+                message.info(errorMessage, {
+                    duration: 1500
+                })
         }
         return Promise.reject(error.response);
     }
