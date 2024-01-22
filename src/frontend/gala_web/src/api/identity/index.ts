@@ -6,7 +6,15 @@ export type LoginData = {
 }
 
 function login(data: LoginData) {
-    return service.post('/identity/v1/auth/login', data,)
+    // return service.post('/identity/v1/auth/login', data,)
+    return service({
+        url: '/identity/v1/auth/login',
+        method: 'post',
+        data,
+        headers: {
+            requireAuth: false
+        }
+    })
 }
 
 
