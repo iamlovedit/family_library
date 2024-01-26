@@ -15,6 +15,7 @@ using SqlSugar.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using FluentValidation;
+using LibraryServices.Infrastructure.Email;
 
 namespace LibraryServices.IdentityService.Controllers.V1
 {
@@ -156,6 +157,14 @@ namespace LibraryServices.IdentityService.Controllers.V1
                 _unitOfWork.RollbackTransaction();
                 return Failed<TokenInfo>(e.Message, 500);
             }
+        }
+
+
+        [HttpPost("email")]
+        public async Task<MessageData<bool>> SendEmailAsync([FromBody] EmailMessage emailMessage, [FromServices] IEmailSender emailSender)
+        {
+            var result = await emailSender.SendTextEmailAsync(emailMessage);
+            return result ? Success(true) : Failed<bool>();
         }
     }
 }
