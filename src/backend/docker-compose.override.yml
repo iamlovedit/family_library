@@ -5,18 +5,14 @@ services:
     image: ${DOCKER_REGISTRY-}library_gateway
     container_name: "library_gateway"
     restart: on-failure
+    env_file:
+      - .env
     networks:
       - "library_services_net"
     volumes:
       - ~/docker/library_services/logs/gateway:/app/logs
     ports:
       - "5000:${ASPNETCORE_HTTP_PORTS}"
-    environment:
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}  
-      - AUDIENCE_KEY=${AUDIENCE_KEY}
-      - TZ=${TIME_ZONE}
-      - SEQ_URL=${SEQ_URL}
-      - SEQ_APIKEY=${SEQ_APIKEY}
     build:
       context: .
       dockerfile: LibraryServices.Gateway/Dockerfile
@@ -25,29 +21,12 @@ services:
     image: ${DOCKER_REGISTRY-}library_family
     container_name: "library_family"
     restart: on-failure
+    env_file:
+      - .env
     volumes:
       - ~/docker/library_services/logs/family:/app/logs
     networks:
       - "library_services_net"
-    environment:
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}   
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USER=${POSTGRESQL_USER}
-      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - AUDIENCE_KEY=${AUDIENCE_KEY}
-      - AES_KEY=${AES_KEY}
-      - TZ=${TIME_ZONE}
-      - MINIO_HOST=${MINIO_HOST}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - SEQ_URL=${SEQ_URL}
-      - SEQ_APIKEY=${SEQ_APIKEY}
     depends_on:
       - postgresql
       - redis
@@ -63,27 +42,10 @@ services:
     restart: on-failure
     networks:
       - "library_services_net"
+    env_file:
+      - .env 
     volumes:
       - ~/docker/library_services/logs/identity:/app/logs
-    environment:
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USER=${POSTGRESQL_USER}
-      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - AUDIENCE_KEY=${AUDIENCE_KEY}
-      - AES_KEY=${AES_KEY}
-      - TZ=${TIME_ZONE}
-      - MINIO_HOST=${MINIO_HOST}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - SEQ_URL=${SEQ_URL}
-      - SEQ_APIKEY=${SEQ_APIKEY}
     depends_on:
       - postgresql
       - redis
@@ -101,25 +63,8 @@ services:
       - "library_services_net"
     volumes:
       - ~/docker/library_services/logs/package:/app/logs
-    environment:
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USER=${POSTGRESQL_USER}
-      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - AUDIENCE_KEY=${AUDIENCE_KEY}
-      - AES_KEY=${AES_KEY}
-      - TZ=${TIME_ZONE}
-      - MINIO_HOST=${MINIO_HOST}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - SEQ_URL=${SEQ_URL}
-      - SEQ_APIKEY=${SEQ_APIKEY}
+    env_file:
+      - .env
     depends_on:
       - postgresql
       - redis
@@ -133,29 +78,12 @@ services:
     image: ${DOCKER_REGISTRY-}library_parameter
     container_name: "library_parameter"
     restart: on-failure
+    env_file:
+      - .env
     networks:
       - "library_services_net"
     volumes:
       - ~/docker/library_services/logs/parameter:/app/logs
-    environment:
-      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS}
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USER=${POSTGRESQL_USER}
-      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - AUDIENCE_KEY=${AUDIENCE_KEY}
-      - AES_KEY=${AES_KEY}
-      - TZ=${TIME_ZONE}
-      - MINIO_HOST=${MINIO_HOST}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - SNOWFLAKES_WORKID=${SNOWFLAKES_WORKID}
-      - SEQ_URL=${SEQ_URL}
-      - SEQ_APIKEY=${SEQ_APIKEY}
     depends_on:
       - postgresql
       - redis
