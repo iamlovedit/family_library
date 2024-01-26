@@ -31,7 +31,8 @@ namespace LibraryServices.IdentityService.Controllers.V1
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<UserCreationDTO> _validator;
 
-        public UserController(ITokenBuilder tokenBuilder, ILogger<UserController> logger, IValidator<UserCreationDTO> validator,
+        public UserController(ITokenBuilder tokenBuilder, ILogger<UserController> logger,
+            IValidator<UserCreationDTO> validator,
             IRedisBasketRepository redis, IMapper mapper, IUserService userService, IUnitOfWork unitOfWork)
         {
             _tokenBuilder = tokenBuilder;
@@ -111,6 +112,22 @@ namespace LibraryServices.IdentityService.Controllers.V1
             {
                 return Failed<TokenInfo>(string.Join(',', validResult.Errors.Select(e => e.ErrorMessage)));
             }
+
+            var cacheKey =
+                $"user/email?type=cache&username={userCreationDTO.Username}&password={userCreationDTO.Password}&email={userCreationDTO.Email}";
+            if (!await _redis.Exist(cacheKey))
+            {
+                return Failed<TokenInfo>("valid code not found!", 410);
+            }
+
+            var emailCode = await _redis.Get<int>(cacheKey);
+            if (userCreationDTO.VaildCode != emailCode)
+            {
+                return Failed<TokenInfo>("valid code is not matched!", 411);
+            }
+
+            await _redis.Remove(cacheKey);
+
             var user = await _userService.GetFirstByExpressionAsync(u => u.Username == userCreationDTO.Username);
             if (user != null)
             {
@@ -145,7 +162,9 @@ namespace LibraryServices.IdentityService.Controllers.V1
                     new(JwtRegisteredClaimNames.Jti, user.Id.ObjToString()),
                     new(ClaimTypes.Expiration,
                         DateTime.Now.AddSeconds(_tokenBuilder.GetTokenExpirationSeconds()).ToString()),
-                    new(JwtRegisteredClaimNames.Iat,  EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),ClaimValueTypes.Integer64),
+                    new(JwtRegisteredClaimNames.Iat,
+                        EpochTime.GetIntDate(DateTime.Now).ToString(CultureInfo.InvariantCulture),
+                        ClaimValueTypes.Integer64),
                     new(ClaimTypes.Role, role.Name!)
                 };
 
@@ -161,10 +180,52 @@ namespace LibraryServices.IdentityService.Controllers.V1
 
 
         [HttpPost("email")]
-        public async Task<MessageData<bool>> SendEmailAsync([FromBody] EmailMessage emailMessage, [FromServices] IEmailSender emailSender)
+        [AllowAnonymous]
+        public async Task<MessageData<bool>> SendEmailAsync([FromBody] UserCreationDTO userCreationDTO,
+            [FromServices] IEmailSender emailSender)
         {
+            var lockKey =
+                $"user/email?type=request&username={userCreationDTO.Username}&password={userCreationDTO.Password}&email={userCreationDTO.Email}";
+            if (await _redis.Exist(lockKey))
+            {
+                return Failed<bool>("invalid request");
+            }
+
+            await _redis.Set(lockKey, userCreationDTO, TimeSpan.FromSeconds(5));
+
+            var validateResult = await _validator.ValidateAsync(userCreationDTO);
+            if (!validateResult.IsValid)
+            {
+                var message = string.Join(',', validateResult.Errors.Select(e => e.ErrorMessage).ToArray());
+                return Failed<bool>(message);
+            }
+
+            var cacheKey =
+                $"user/email?type=cache&username={userCreationDTO.Username}&password={userCreationDTO.Password}&email={userCreationDTO.Email}";
+
+            if (await _redis.Exist(cacheKey))
+            {
+                return Failed<bool>(code: 400);
+            }
+
+            var code = Random.Shared.Next(100001, 999999);
+            var content = $"""
+                           您好：
+                               欢迎注册我的网站，为了安全请将以下验证码输入到注册页面,5分钟内有效。
+                           
+                               {code}
+                           
+                               Youngala
+                           """;
+            var emailMessage = new EmailMessage(userCreationDTO.Username, userCreationDTO.Email, "注册验证", content);
             var result = await emailSender.SendTextEmailAsync(emailMessage);
-            return result ? Success(true) : Failed<bool>();
+            if (!result)
+            {
+                return Failed<bool>();
+            }
+
+            await _redis.Set(cacheKey, code, TimeSpan.FromMinutes(5));
+            return Success(true);
         }
     }
 }
