@@ -1,4 +1,6 @@
-﻿using Asp.Versioning;
+﻿using System.Globalization;
+using System.Security.Claims;
+using Asp.Versioning;
 using LibraryServices.Domain.DataTransferObjects.Identity;
 using LibraryServices.IdentityService.Services;
 using LibraryServices.Infrastructure;
@@ -9,10 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using SqlSugar.Extensions;
-using System.Globalization;
-using System.Security.Claims;
 
-namespace LibraryServices.Identity.Controllers.V1
+namespace LibraryServices.IdentityService.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("identity/v{version:apiVersion}/auth")]
