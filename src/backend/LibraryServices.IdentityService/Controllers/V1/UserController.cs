@@ -181,14 +181,14 @@ namespace LibraryServices.IdentityService.Controllers.V1
 
         [HttpPost("email")]
         [AllowAnonymous]
-        public async Task<MessageData<bool>> SendEmailAsync([FromBody] UserCreationDTO userCreationDTO,
+        public async Task<MessageData<string>> SendEmailAsync([FromBody] UserCreationDTO userCreationDTO,
             [FromServices] IEmailSender emailSender)
         {
             var lockKey =
                 $"user/email?type=request&username={userCreationDTO.Username}&password={userCreationDTO.Password}&email={userCreationDTO.Email}";
             if (await _redis.Exist(lockKey))
             {
-                return Failed<bool>("invalid request");
+                return Failed<string>("invalid request");
             }
 
             await _redis.Set(lockKey, userCreationDTO, TimeSpan.FromSeconds(5));
@@ -197,7 +197,7 @@ namespace LibraryServices.IdentityService.Controllers.V1
             if (!validateResult.IsValid)
             {
                 var message = string.Join(',', validateResult.Errors.Select(e => e.ErrorMessage).ToArray());
-                return Failed<bool>(message);
+                return Failed<string>(message);
             }
 
             var cacheKey =
@@ -205,7 +205,7 @@ namespace LibraryServices.IdentityService.Controllers.V1
 
             if (await _redis.Exist(cacheKey))
             {
-                return Failed<bool>(code: 400);
+                return Failed<string>(code: 400);
             }
 
             var code = Random.Shared.Next(100001, 999999);
@@ -221,11 +221,10 @@ namespace LibraryServices.IdentityService.Controllers.V1
             var result = await emailSender.SendTextEmailAsync(emailMessage);
             if (!result)
             {
-                return Failed<bool>();
+                return Failed<string>("send email failed", 412);
             }
-
             await _redis.Set(cacheKey, code, TimeSpan.FromMinutes(5));
-            return Success(true);
+            return Success($"{code}");
         }
     }
 }
